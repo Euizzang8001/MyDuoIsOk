@@ -10,8 +10,8 @@ router = APIRouter(
     }
 )
 
-#id로 사용자 정보 get
+#id로 사용자의 전적에 대한 분석을 제공
 @router.get('/get', response_model=Player)
 async def get_player(player_id: str, service: PlayerService = Depends()):
-    result = service.get_player_by_id(player_id)
+    result = service.get_player(player_id)
     return result
