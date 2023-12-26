@@ -3,7 +3,13 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 class PlayerBase(BaseModel):
-    Player_name: str
+    id: str
+    accountId:str
+    puuid:str
+    name:str
+    profileIconId: int
+    revisionDate:int
+    summonerLevel:int
 
 class Player(PlayerBase):
     datetime: datetime.datetime

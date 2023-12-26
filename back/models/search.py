@@ -5,14 +5,36 @@ from config.database import Base
 class Player(Base):
     __tablename__ = "players"
     
-    player_id = Column( 
+    id = Column( 
         String(255),
         primary_key=True,
         unique = True,
         comment='Player ID',
     )
-    datetime = Column(
-        DateTime(timezone=True),
-        server_default=current_timestamp(),
-        nullable=False,
+    accointId = Column(
+        String(255),
+        primary_key=True,
+        unique = True,
+        comment='Player Account ID',
+    )
+    puuid = Column(
+        String(255),
+        unique = True,
+        comment='Player PUUID',
+    )
+    name = Column(
+        String(255),
+        comment = 'Player Name',
+    )
+    profileIconId = Column(
+        Integer,
+        comment = "Player Profile Icon ID",
+    )
+    revisionDate = Column(
+        Integer,
+        comment="Revision Date",
+    )
+    summonerLevel = Column(
+        Integer,
+        comment="Summoner Level",
     )
