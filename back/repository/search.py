@@ -27,25 +27,23 @@ class PlayerRepository():
     def __init__(self, db: Session = Depends(get_db)) -> None : 
         self.db = db
 
-    def get_player_account(self, player_name: str): #player_name -> player의 계정 정보 return
-        # player = self.get_player_in_db(player_id = player_id)
+    def get_player_puuid(self, player_name: str): #player_name -> player의 계정 정보 return
         player = player_name
-        if player:
-            player = player.replace('','%20')
-            request_url = f'https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/{player}'
-            result = requests.get(request_url, headers=headers)
-            player_info = result.json()
-            return player_info
-        else:
-            return {'404 not found'}
+        player = player.replace('','%20')
+        request_url = f'https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/{player}'
+        result = requests.get(request_url, headers=headers)
+        result.raise_for_status()
+        player_account = result.json()
+        return player_account['puuid']
     
-    def get_player_match(self, puuid = str): #player_name -> player의 match_id return
-        requests_url = f"https://kr.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids"
+    def get_player_match(self, puuid: str) -> List[str]: #player_name -> player의 match_id return
+        requests_url = f"https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start={1}&count={100}"
         result = requests.get(requests_url, headers=headers)
-        player_match_info = result.json()
-        return player_match_info
+        result.raise_for_status()
+        match_id = result.json()
+        return match_id 
 
-    def get_match_info(self, match_id = str): #match_id -> match_info return
+    def get_match_info(self, match_id: str): #match_id -> match_info return
         requests_url = f"https://kr.api.riotgames.com/lol/match/v5/matches/{match_id}"
         result = requests.get(requests_url, headers=headers)
         match_info = result.json()
@@ -60,8 +58,6 @@ class PlayerRepository():
                 participants = match_info['info']['participants'][i]
                 if participants["puuid"] == player_puuid:
                     return {participants}
-                else:
-                    continue
             return {'404 Not Found'}
             
 
