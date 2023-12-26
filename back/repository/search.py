@@ -29,13 +29,37 @@ class PlayerRepository():
     
     # def get_player__in db
 
-    def get_player(self, player_id: str) -> Player:
+    def get_player_account(self, player_name: str) -> PlayerBase:
         # player = self.get_player_in_db(player_id = player_id)
-        player = player_id
+        player = player_name
         if player:
-            player_id = player.replace('','%20')
-            request_url = f'https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/{player_id}'
-            player_info = requests.get(request_url)
+            player = player.replace('','%20')
+            request_url = f'https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/{player}'
+            result = requests.get(request_url, headers=headers)
+            player_info = result.json()
             return player_info
         else:
             True
+    
+    def get_player_match(self, player_name = str) -> PlayerBase:
+        player_account = self.get_player_account(player_name = player_name)
+        player_account = player_account.json()
+        requests_url = f"https://kr.api.riotgames.com/lol/match/v5/matches/by-puuid/{player_account['puuid']}/ids"
+        result = requests.get(requests_url, headers=headers)
+        player_match_info = result.json()
+        return player_match_info
+
+    def get_match_info(self, match_id = str):
+        requests_url = f"https://kr.api.riotgames.com/lol/match/v5/matches/{match_id}"
+        result = requests.get(requests_url, headers=headers)
+        match_info = result.json()
+        return match_info
+    
+    def player_match_data(self, player_id = list, match_id = str):
+        match_info = self.get_match_info(match_id)
+        if match_info['info']['gameMode'] != 'CLASSIC':
+            return {'Not Classic'}
+        for summoner in match_info['info']['participants']:
+            
+
+    
