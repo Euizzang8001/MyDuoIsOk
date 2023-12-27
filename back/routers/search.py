@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from schemas.search import Player, PlayerBase
+from schemas.search import MatchBase, Summoner, SummonerBase
 from services.search import PlayerService
 
 router = APIRouter(

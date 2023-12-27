@@ -1,6 +1,6 @@
 from fastapi import Depends
 
-from schemas.search import Player,PlayerBase
+from schemas.search import MatchBase, Summoner, SummonerBase
 from repository.search import PlayerRepository
 import json
 

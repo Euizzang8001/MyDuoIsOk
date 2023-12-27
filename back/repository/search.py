@@ -9,8 +9,9 @@ import json
 import datetime
 import time
 from config.database import get_db
-from models.search import Player as PlayerModel
-from schemas.search import Player, PlayerBase
+from models.search import Match as MatchModel
+from models.search import Summoner as SummonerModel
+from schemas.search import MatchBase, Summoner, SummonerBase
 from datetime import date
 
 apikey="RGAPI-e32e0ce6-8c85-4616-a907-4934dc1560b5"

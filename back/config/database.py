@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 SECRET_FILE = os.path.join(BASE_DIR, 'secret.json')
 secrets = json.loads(open(SECRET_FILE).read())
-db = secrets["db"]
+db = secrets["DB"]
 
 SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{db.get('user')}:{db.get('password')}@{db.get('host')}:{db.get('port')}/{db.get('database')}?charset=utf8"
 
