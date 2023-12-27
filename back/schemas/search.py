@@ -2,16 +2,20 @@ import datetime
 from pydantic import BaseModel
 from typing import List, Optional
 
-class PlayerBase(BaseModel):
-    id: str
-    accountId:str
-    puuid:str
-    name:str
-    profileIconId: int
-    revisionDate:int
-    summonerLevel:int
+class MatchBase(BaseModel):
+    match_id: str
+    gameMode:str
+    teamBlue:list
+    teamPurple:list
+    participants: list
 
-class Player(PlayerBase):
+class SummonerBase(BaseModel):
+    puuid: str
+    riotIdGameName:str
+    riotIdTagline:list
+    match_list:list
+
+class Summoner(SummonerBase):
     datetime: datetime.datetime
     class Config:
         orm_mode = True

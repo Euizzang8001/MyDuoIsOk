@@ -37,16 +37,7 @@ if search_player: #검색하기 위해 버튼을 누르면 검색 정보를 db�
             match_id_list = list(set(match_id_list) & set(requests.get(get_match_list_url, params={'player_puuid': player_puuid}).json()))
 
 #이거 엄청난 오버헤드다.............
-for match in match_id_list:
-    match_info = requests.get(get_match_info_url, params={'match_id': match}).json()
-    player_info_per_match_dict[match] = {}
-    player_info_per_match_dict[match]['info'] = ''
-    player_info_per_match_dict[match]['info'] = match_info['info']['gameMode']
-    for player in match_info['info']['participants']:
-        if player['puuid'] in player_puuid_list:
-            player_info_per_match_dict[match][player['puuid']] = {}
-            player_info_per_match_dict[match][player['puuid']] = player
-    st.write(player_info_per_match_dict)
+# for match in match_id_list:
     
     
 
