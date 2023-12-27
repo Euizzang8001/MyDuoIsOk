@@ -2,8 +2,10 @@ import streamlit as st
 import requests
 import datetime
 
-back_url = 'http://127.0.0.1:8000'
-get_puuid_url = back_url + 'get-player'
+back_url = 'http://127.0.0.1:8000/myduoisok'
+get_puuid_url = back_url + '/get-player'
+get_match_list_url = back_url + '/get-matchid'
+get_match_info_url = back_url + '/get-matchinfo'
 
 st.title('My Duo Is OK..? :frowning:')
     
@@ -16,16 +18,38 @@ st.write(explain3)
 
 player = st.text_input('Write The Player Name')
 search_player = st.button('Search')
-player_list = player.split(', ')
+player_nospace = ''.join(i for i in player if not i.isspace())
+player_list = list(player_nospace.split(','))
 
-match_id = []
+player_puuid_list = []
 
-@router.get('/get-player', response_model = str) #플레이어 이름 -> puuid get
-async def get_player_puuid(player:str, service: PlayerService=Depends()):
-    result = service.get_player_puuid(player = player)
-    return result
+match_id_list = []
 
+player_info_per_match_dict = {}
 
 if search_player: #검색하기 위해 버튼을 누르면 검색 정보를 db에 저장하고 불러오기
-    for i in range(len(player_list)):
-        match_list = requests(get_puuid_url, player = player_list[i])
+    for player_name in player_list:
+        player_puuid = requests.get(get_puuid_url, params={'player': player_name}).json()
+        player_puuid_list.append(player_puuid)
+        if len(match_id_list) == 0:
+            match_id_list = requests.get(get_match_list_url, params={'player_puuid': player_puuid}).json()
+        else:
+            match_id_list = list(set(match_id_list) & set(requests.get(get_match_list_url, params={'player_puuid': player_puuid}).json()))
+
+#이거 엄청난 오버헤드다.............
+for match in match_id_list:
+    match_info = requests.get(get_match_info_url, params={'match_id': match}).json()
+    player_info_per_match_dict[match] = {}
+    player_info_per_match_dict[match]['info'] = ''
+    player_info_per_match_dict[match]['info'] = match_info['info']['gameMode']
+    for player in match_info['info']['participants']:
+        if player['puuid'] in player_puuid_list:
+            player_info_per_match_dict[match][player['puuid']] = {}
+            player_info_per_match_dict[match][player['puuid']] = player
+    st.write(player_info_per_match_dict)
+    
+    
+
+    
+
+        

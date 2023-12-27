@@ -13,7 +13,7 @@ from models.search import Player as PlayerModel
 from schemas.search import Player, PlayerBase
 from datetime import date
 
-apikey="RGAPI-626d57b2-73d2-463a-9252-5d3b2f413799"
+apikey="RGAPI-e32e0ce6-8c85-4616-a907-4934dc1560b5"
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -44,21 +44,7 @@ class PlayerRepository():
         return match_id 
 
     def get_match_info(self, match_id: str): #match_id -> match_info return
-        requests_url = f"https://kr.api.riotgames.com/lol/match/v5/matches/{match_id}"
+        requests_url = f"https://asia.api.riotgames.com/lol/match/v5/matches/{match_id}"
         result = requests.get(requests_url, headers=headers)
         match_info = result.json()
         return match_info
-    
-    def player_in_match_data(self, player_puuid = str, match_id = str): #puuid, match_id -> 해당 매치에서의 player의 정보 return
-        match_info = self.get_match_info(match_id)
-        if match_info['info']['gameMode'] != 'CLASSIC':
-            return {'Not Classic'}
-        else:
-            for i in range(10):
-                participants = match_info['info']['participants'][i]
-                if participants["puuid"] == player_puuid:
-                    return {participants}
-            return {'404 Not Found'}
-            
-
-    

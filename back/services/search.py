@@ -22,6 +22,7 @@ class PlayerService():
         match_list = self.repository.get_player_match(puuid = puuid)
         return match_list
     
-    def get_player_info_per_match(self, player: str, match_id: str):
-        player_info_per_match= self.repository.player_in_match_data(player_puuid=player, match_id=match_id)
-        return player_info_per_match
+    def get_match_info(self, match_id: str):
+#match 정보를 불러오고
+        match_info= self.repository.get_match_info(match_id=match_id)
+        return match_info   
