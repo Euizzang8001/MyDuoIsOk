@@ -1,7 +1,8 @@
 from fastapi import Depends
 
-from schemas.search import MatchInfoBase, Summoner, SummonerBase
+from schemas.search import summoner_info, match_info
 from repository.search import SummonerRepository
+from models.search import MatchInfoBase, SummonerBase
 import json
 
 class SummonerService():
@@ -12,7 +13,7 @@ class SummonerService():
         summoner_puuid = self.repository.get_summoner_puuid(summoner_name = summoner)
         return summoner_puuid
     
-    def get_players_match(self, player: str) -> list:
+    def get_players_match(self, summoner: str) -> list:
         summoner = self.repository.get_summoner_puuid(summoner_name = summoner)
         summoner_puuid = summoner
         match_list = self.repository.get_summoner_match(puuid = summoner_puuid)
@@ -23,7 +24,6 @@ class SummonerService():
         return match_list
     
     def get_match_info(self, match_id: str):
-#match 정보를 불러오고
         match_info= self.repository.get_match_info(match_id=match_id)
         return match_info
     
@@ -31,9 +31,6 @@ class SummonerService():
         match_info = self.repository.append_match_info(match_info)
         return match_info
 
-    def append_summoner_info(self, puuid: str, summoner_info : Summoner):
+    def append_summoner_info(self, puuid: str, summoner_info : SummonerBase):
         summoner_info = self.repository.append_summoner_info(puuid = puuid, summoner_dto=summoner_info)
-    
-    def create_summoner_table(self, puuid: str):
-        summoner_info = self.repository.create_new_summoner_table(puuid = puuid)
         return summoner_info
