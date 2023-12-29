@@ -34,3 +34,15 @@ class SummonerService():
     def append_summoner_info(self, puuid: str, summoner_info : SummonerBase):
         summoner_info = self.repository.append_summoner_info(puuid = puuid, summoner_dto=summoner_info)
         return summoner_info
+    
+    def delete_match_info(self, match_id: str):
+        match_delete = self.repository.delete_match_info(match_id = match_id)
+        return match_delete
+    
+    def delete_summoner_match_info(self, match_id: str, puuid: str):
+        result = self.repository.delete_summoner_match_info(match_id = match_id, puuid = puuid)
+        return result
+    
+    def check_match_in_list(self, match_id : str):
+        result = self.repository.check_match_in_list(match_id = match_id)
+        return result

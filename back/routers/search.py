@@ -20,12 +20,12 @@ async def get_summoner_puuid(summoner: str, service: SummonerService = Depends()
     return result
 
 @router.get('/get-matchid') #puuid -> matchid list return
-async def get_summoner_puuid(summoner_puuid:str, service: SummonerService=Depends()):
+async def get_summoner_matchid(summoner_puuid:str, service: SummonerService=Depends()):
     result = service.get_match(summoner_puuid)
     return result
 
 @router.get('/get-matchinfo')
-async def get_summoner_match_id(match_id: str, service: SummonerService = Depends()):
+async def get_match_info(match_id: str, service: SummonerService = Depends()):
     result = service.get_match_info(match_id = match_id)
     return result
 
@@ -34,7 +34,23 @@ async def append_match_info(match_info: MatchInfoBase, service: SummonerService 
     result = service.append_match_info(match_info = match_info)
     return result
 
-@router.post('/append-summoner-info') #summoner table에 새로운 match data 입력
+@router.post('/append-summonerinfo') #summoner table에 새로운 match data 입력
 async def append_summoner_info(puuid:str, summoner_info: SummonerBase, service: SummonerService = Depends()):
     result = service.append_summoner_info(puuid = puuid, summoner_info = summoner_info)
+    return result
+
+@router.delete('/delete{matchId}')
+async def delete_match_info(match_id: str, service : SummonerService = Depends()):
+    result = service.delete_match_info(match_id = match_id)
+    return result
+
+#고쳐야함
+@router.delete('/delete{puuid}')
+async def delete_summoner_match_info(match_id: str, puuid: str, service : SummonerService = Depends()):
+    result = service.delete_summoner_match_info(match_id = match_id, puuid = puuid)
+    return result
+
+@router.get('/check-match')
+async def check_match_in_list(match_id: str, service : SummonerService=Depends()):
+    result = service.check_match_in_list(match_id = match_id)
     return result

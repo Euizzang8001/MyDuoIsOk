@@ -52,5 +52,27 @@ class SummonerRepository():
         collection_name.insert_one(dict(summoner_dto))
         return {'success'}
 
+    def delete_match_info(self, match_id: str):
+        collection_name = self.db['match']
+        collection_name.find_one_and_delete({"matchId": match_id})
+        return {'success'}
+    
+    #고쳐야함
+    def delete_summoner_match_info(self, match_id: str, puuid: str):
+        collection_name = self.db[f"{puuid}"]
+        result = collection_name.find_one_and_delete({"matchId": match_id})
+        if result:
+            return {"success": True}
+        else:
+            return {"success": False, "message": "Document not found"}
+        
+    def check_match_in_list(self, match_id: str):
+        collection_name = self.db['match']
+        result = collection_name.find({'matchId': match_id})
+        if result.count()>0:
+            return True
+        else:
+            return False
+
 
 
