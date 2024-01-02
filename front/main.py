@@ -36,8 +36,8 @@ if search_player: #검색하기 위해 버튼을 누르면 검색 정보를 db�
         else:
             match_id_list = list(set(match_id_list) & set(requests.get(get_match_list_url, params={'player_puuid': player_puuid}).json()))
 
-#이거 엄청난 오버헤드다.............
-# for match in match_id_list:
+for match in match_id_list:
+    
     
     
 
