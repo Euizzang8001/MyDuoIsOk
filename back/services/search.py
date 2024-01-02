@@ -43,6 +43,7 @@ class SummonerService():
         result = self.repository.delete_summoner_match_info(match_id = match_id, puuid = puuid)
         return result
     
-    def check_match_in_list(self, match_id : str):
-        result = self.repository.check_match_in_list(match_id = match_id)
+    def check_match_in_db(self, match_id : str):
+        result = self.repository.check_match_in_db(match_id = match_id)
         return result
+    

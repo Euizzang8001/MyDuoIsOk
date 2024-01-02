@@ -38,6 +38,8 @@ def match_info(match) -> dict:
 def summoner_info(summoner) -> dict:
     return{
         "matchId": summoner['matchId'],
+        "riotName": summoner['riotName'],
+        "riotTagline": summoner['riotTagline'],
         "championId": summoner['championId'],
         "goldEarned": summoner['goldEarned'],
         "kills": summoner['kills'],

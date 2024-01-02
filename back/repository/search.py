@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from config.databases import db
 from models.search import MatchInfoBase, SummonerBase
 
-apikey="RGAPI-ad16881b-b5b8-440c-849e-cafcfe62ae9d"
+apikey="RGAPI-ce18d1f5-37ea-4c17-9045-1e8a431819c0"
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -74,7 +74,7 @@ class SummonerRepository():
         else:
             return {'success': False, 'message': 'Document not found'}
         
-    def check_match_in_list(self, match_id: str):
+    def check_match_in_db(self, match_id: str):
         collection_name = self.db['match']
         result = collection_name.find({'matchId': match_id})
         if result.count()>0:
