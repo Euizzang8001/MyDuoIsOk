@@ -43,28 +43,36 @@ class SummonerRepository():
     
     def append_match_info(self, match_info_dto: MatchInfoBase): #match_info_dto를 받아서 match collection에 저장
         collection_name = self.db["match"]
-        collection_name.insert_one(dict(match_info_dto))
-        return {'success'}
+        result = collection_name.insert_one(dict(match_info_dto))
+        if result:
+            return {'success': True}
+        else:
+            return {'success': False}
         
         
     def append_summoner_info(self, puuid: str, summoner_dto: SummonerBase): 
-        collection_name = self.db[f"{puuid}"]
-        collection_name.insert_one(dict(summoner_dto))
-        return {'success'}
+        collection_name = self.db[puuid]
+        result = collection_name.insert_one(dict(summoner_dto))
+        if result:
+            return {'success': True}
+        else:
+            return {'success': False}
 
     def delete_match_info(self, match_id: str):
         collection_name = self.db['match']
-        collection_name.find_one_and_delete({"matchId": match_id})
-        return {'success'}
-    
-    #고쳐야함
-    def delete_summoner_match_info(self, match_id: str, puuid: str):
-        collection_name = self.db[f"{puuid}"]
         result = collection_name.find_one_and_delete({"matchId": match_id})
         if result:
-            return {"success": True}
+            return {'success': True}
         else:
-            return {"success": False, "message": "Document not found"}
+            return {'success': False, 'message': 'Document not found'}
+    
+    def delete_summoner_match_info(self, match_id: str, puuid: str):
+        collection_name = self.db[puuid]
+        result = collection_name.find_one_and_delete({"matchId": match_id})
+        if result:
+            return {'success': True}
+        else:
+            return {'success': False, 'message': 'Document not found'}
         
     def check_match_in_list(self, match_id: str):
         collection_name = self.db['match']

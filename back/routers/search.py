@@ -44,10 +44,9 @@ async def delete_match_info(match_id: str, service : SummonerService = Depends()
     result = service.delete_match_info(match_id = match_id)
     return result
 
-#고쳐야함
-@router.delete('/delete{puuid}')
-async def delete_summoner_match_info(match_id: str, puuid: str, service : SummonerService = Depends()):
-    result = service.delete_summoner_match_info(match_id = match_id, puuid = puuid)
+@router.delete('/delete/{matchId}/{puuid}')
+async def delete_summoner_match_info(match_id: str, puuid: str, service: SummonerService = Depends()):
+    result = service.delete_summoner_match_info(match_id=match_id, puuid=puuid)
     return result
 
 @router.get('/check-match')
