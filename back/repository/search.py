@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from config.databases import db
 from models.search import MatchInfoBase, SummonerBase
 
-apikey="RGAPI-ce18d1f5-37ea-4c17-9045-1e8a431819c0"
+apikey="RGAPI-fe4010de-688e-497e-a7e3-fb26c078695d"
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",

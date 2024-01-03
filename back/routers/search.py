@@ -30,7 +30,7 @@ async def get_match_info(match_id: str, service: SummonerService = Depends()):
     result = service.get_match_info(match_id = match_id)
     return result
 
-@router.put('/append-matchinfo') #match info를 받으면 db에 저장하는 router
+@router.post('/append-matchinfo') #match info를 받으면 db에 저장하는 router
 async def append_match_info(match_info: MatchInfoBase, service: SummonerService = Depends()):
     result = service.append_match_info(match_info = match_info)
     return result

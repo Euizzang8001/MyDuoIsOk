@@ -8,7 +8,7 @@ get_match_list_url = back_url + '/get-matchid'
 get_match_info_url = back_url + '/get-matchinfo'
 check_match_in_db_url = back_url + '/check-match-in-db'
 append_match_info_url = back_url + '/append-matchinfo'
-append_summoner_info_url = back_url + '/append-summonerinfo'
+
 
 st.title('My Duo Is OK..? :frowning:')
     
@@ -59,7 +59,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     lane = 1
                 elif match_info['info']['participants'][i]['lane'] == 'MIDDLE':
                     lane = 2
-                elif match_info['info']['participants'][i]['lane'] == 'CARRY':
+                elif match_info['info']['participants'][i]['role'] == 'CARRY':
                     lane = 3
                 else:
                     lane = 4
@@ -85,7 +85,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     same_lane_enemey[lane][6] -= match_info['info']['participants'][i]['totalHeal']
                     same_lane_enemey[lane][7] -= match_info['info']['participants'][i]['totalTimeCCDealt']
                     same_lane_enemey[lane][8] -= match_info['info']['participants'][i]['visionScore']
-
+            st.write(same_lane_enemey)
             for i in range(10):
                 if i < 5:
                     per_summoner_info = {
@@ -143,20 +143,21 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "win": match_info['info']['participants'][i]['win'],
                         "visionScore": match_info['info']['participants'][i]['visionScore'],
 
-                        "versusassists": (-1) * same_lane_enemey[lane_list[i]][0],
-                        "versuschampLevel" :(-1) * same_lane_enemey[lane_list[i]][1],
-                        "versusdeaths":(-1) * same_lane_enemey[lane_list[i]][2],
-                        "versusgoldEarned":(-1) * same_lane_enemey[lane_list[i]][3],
-                        "versuskills":(-1) * same_lane_enemey[lane_list[i]][4],
-                        "versusTDDTC":(-1) * same_lane_enemey[lane_list[i]][5],
-                        "versusTH":(-1) * same_lane_enemey[lane_list[i]][6],
-                        "versusTTCCD":(-1) * same_lane_enemey[lane_list[i]][7],
-                        "versusVS": (-1) * same_lane_enemey[lane_list[i]][8],
+                        "versusassists": -same_lane_enemey[lane_list[i]][0],
+                        "versuschampLevel" :-same_lane_enemey[lane_list[i]][1],
+                        "versusdeaths":-same_lane_enemey[lane_list[i]][2],
+                        "versusgoldEarned":-same_lane_enemey[lane_list[i]][3],
+                        "versuskills":-same_lane_enemey[lane_list[i]][4],
+                        "versusTDDTC":-same_lane_enemey[lane_list[i]][5],
+                        "versusTH":-same_lane_enemey[lane_list[i]][6],
+                        "versusTTCCD":-same_lane_enemey[lane_list[i]][7],
+                        "versusVS": -same_lane_enemey[lane_list[i]][8],
                     }
                 if per_summoner_info['teamId'] not in goldSum:
                     goldSum[per_summoner_info['teamId']] = 0
                 goldSum[per_summoner_info['teamId']] += per_summoner_info['goldEarned']
                 st.write(per_summoner_info)
+                append_summoner_info_url = back_url + f"/append-summonerinfo/{match_info['metadata']['participants'][i]}"
                 result = requests.put(append_summoner_info_url, params={'puuid': match_info['metadata']['participants'][i]},  json=per_summoner_info)
             #db에 저장하고
             per_match_info = {
@@ -193,7 +194,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 "teamPurpleRiftheraldKills": match_info['info']['teams'][1]['objectives']['riftHerald']['kills'],
                 "teamPurpleTowerKills": match_info['info']['teams'][1]['objectives']['tower']['kills'],
             }
-            match_result = requests.put(append_match_info_url, json = per_match_info)
+            match_result = requests.post(append_match_info_url, json = per_match_info)
             st.write(match_result)
             
 
