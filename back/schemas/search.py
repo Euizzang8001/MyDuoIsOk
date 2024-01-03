@@ -1,6 +1,8 @@
 def match_info(match) -> dict:
     return{
+        "gameMode": match['gameMode'],
         "matchId": match['matchId'],
+
         "summonerOnePuuid": match['summonerOnePuuid'],
         "summonerTwoPuuid": match['summonerTwoPuuid'],
         "summonerThreePuuid": match['summonerThreePuuid'],
@@ -12,9 +14,8 @@ def match_info(match) -> dict:
         "summonerNinePuuid": match['summonerNinePuuid'],
         "summonerTenPuuid": match['summonerTenPuuid'],
 
-        "gameMode": match['gameMode'],
-
         "teamBlueId": match['teamBlueId'],
+        "teamBlueBan": list(match[i]['championId'] for i in range(5)),
         "teamBlueWin": match['teamBlueWin'],
         "teamBlueGold": match['teamBlueGold'],
         "teamBlueBaronKills": match['teamBlueBaronKills'],
@@ -25,6 +26,7 @@ def match_info(match) -> dict:
         "teamBlueTowerKills": match['teamBlueTowerKills'],
 
         "teamPurpleId": match['teamPurpleId'],
+        "teamPurpleBan": list(match[i]['championId'] for i in range(5)),
         "teamPurpleWin": match['teamPurpleWin'],
         "teamPurpleGold": match['teamPurpleGold'],
         "teamPurpleBaronKills": match['teamPurpleBaronKills'],
@@ -38,22 +40,31 @@ def match_info(match) -> dict:
 def summoner_info(summoner) -> dict:
     return{
         "matchId": summoner['matchId'],
-        "riotName": summoner['riotName'],
-        "riotTagline": summoner['riotTagline'],
-        "championId": summoner['championId'],
-        "goldEarned": summoner['goldEarned'],
-        "kills": summoner['kills'],
-        "deaths": summoner['deaths'],
         "assists": summoner['assists'],
+        "champLevel": summoner['champLevel'],
+        "championId": summoner['championId'],
+        "championName": summoner['championName'],
+        "deaths": summoner['deaths'],
+        "goldEarned": summoner['goldEarned'],
+        "goldSpent": summoner['goldSpent'],
+        "kills": summoner['kills'],
         "lane": summoner['lane'],
+        "summonerName": summoner['summonerName'],
+        "riotIdTagline": summoner['riotIdTagline'],
         "role": summoner['role'],
         "teamId": summoner['teamId'],
-        "champLevel": summoner['champLevel'],
-        "goldSpent": summoner['goldSpent'],
         "totalDamageDealtToChampions": summoner['totalDamageDealtToChampions'],
         "totalHeal": summoner['totalHeal'],
         "totalTimeCCDealt": summoner['totalTimeCCDealt'],
         "win": summoner['win'],
         "visionScore": summoner['visionScore'],
-        "lastSearchTime": summoner['lastSearchTime']
+        "versusassists": summoner['versusassists'],
+        "versuschampionLevel" :summoner['versuschampionLevel'],
+        "versusdeaths":summoner['versusdeaths'],
+        "versusgoldEarned":summoner['versusgoldEarned'],
+        "versuskills":summoner['versuskills'],
+        "versusTDDTC":summoner['versusTDDTC'],
+        "versusTH":summoner['versusTH'],
+        "versusTTCCD":summoner['versusTTCCD'],
+        "versusVS": summoner['versusVS'],
     }

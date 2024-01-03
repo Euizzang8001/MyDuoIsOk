@@ -3,6 +3,7 @@ from models.search import MatchInfoBase, SummonerBase
 from schemas.search import match_info, summoner_info
 from bson import ObjectId
 from services.search import SummonerService
+import json
 
 
 router = APIRouter(
@@ -34,7 +35,7 @@ async def append_match_info(match_info: MatchInfoBase, service: SummonerService 
     result = service.append_match_info(match_info = match_info)
     return result
 
-@router.post('/append-summonerinfo') #summoner table에 새로운 match data 입력
+@router.post('/append-summonerinfo/{puuid}') #summoner table에 새로운 match data 입력
 async def append_summoner_info(puuid:str, summoner_info: SummonerBase, service: SummonerService = Depends()):
     result = service.append_summoner_info(puuid = puuid, summoner_info = summoner_info)
     return result
@@ -52,4 +53,7 @@ async def delete_summoner_match_info(match_id: str, puuid: str, service: Summone
 @router.get('/check-match-in-db')
 async def check_match_in_db(match_id: str, service : SummonerService=Depends()):
     result = service.check_match_in_db(match_id = match_id)
-    return result
+    if result == True:
+        return True
+    else:
+        return False

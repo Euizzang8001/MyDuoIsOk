@@ -45,5 +45,7 @@ class SummonerService():
     
     def check_match_in_db(self, match_id : str):
         result = self.repository.check_match_in_db(match_id = match_id)
-        return result
+        if result == True:
+            return True
+        return False
     

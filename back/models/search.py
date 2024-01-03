@@ -17,6 +17,7 @@ class MatchInfoBase(BaseModel):
     gameMode : str
 
     teamBlueId : int
+    teamBlueBan: list
     teamBlueWin : int
     teamBlueGold : int
     teamBlueBaronKills : int
@@ -27,6 +28,7 @@ class MatchInfoBase(BaseModel):
     teamBlueTowerKills : int
     
     teamPurpleId : int
+    teamPurpleBan: list
     teamPurpleWin : int
     teamPurpleGold : int
     teamPurpleBaronKills : int
@@ -37,20 +39,31 @@ class MatchInfoBase(BaseModel):
     teamPurpleTowerKills : int
 
 class SummonerBase(BaseModel):
-    matchId : str
-    championId : int
-    goldEarned: int
-    kills: int
-    deaths : int
+    matchId: str
     assists: int
+    champLevel: int
+    championId: int
+    championName: str
+    deaths: int
+    goldEarned: int
+    goldSpent: int
+    kills: int
     lane: str
+    summonerName: str
+    riotIdTagline: str
     role: str
     teamId: int
-    champLevel: int
-    goldSpent: int
     totalDamageDealtToChampions: int
-    totalHeal: int 
+    totalHeal: int
     totalTimeCCDealt: int
-    win: int
+    win: bool
     visionScore: int
-    lastSearchTime: datetime
+    versusassists: int
+    versuschampionLevel :int
+    versusdeaths:int
+    versusgoldEarned:int
+    versuskills:int
+    versusTDDTC:int
+    versusTH:int
+    versusTTCCD:int
+    versusVS: int
