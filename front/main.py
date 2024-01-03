@@ -100,6 +100,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "kills": match_info['info']['participants'][i]['kills'],
                         "lane": match_info['info']['participants'][i]['lane'],
                         "summonerName": match_info['info']['participants'][i]['summonerName'],
+                        "riotIdGameName":  match_info['info']['participants'][i]['riotIdGameName'],
                         "riotIdTagline":  match_info['info']['participants'][i]['riotIdTagline'],
                         "role": match_info['info']['participants'][i]['role'],
                         "teamId": match_info['info']['participants'][i]['teamId'],
@@ -132,6 +133,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "kills": match_info['info']['participants'][i]['kills'],
                         "lane": match_info['info']['participants'][i]['lane'],
                         "summonerName": match_info['info']['participants'][i]['summonerName'],
+                        "riotIdGameName":  match_info['info']['participants'][i]['riotIdGameName'],
                         "riotIdTagline":  match_info['info']['participants'][i]['riotIdTagline'],
                         "role": match_info['info']['participants'][i]['role'],
                         "teamId": match_info['info']['participants'][i]['teamId'],
@@ -154,7 +156,8 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 if per_summoner_info['teamId'] not in goldSum:
                     goldSum[per_summoner_info['teamId']] = 0
                 goldSum[per_summoner_info['teamId']] += per_summoner_info['goldEarned']
-                result = requests.post(append_summoner_info_url, params={'puuid': match_info['metadata']['participants'][i]},  json=per_summoner_info)
+                st.write(per_summoner_info)
+                result = requests.put(append_summoner_info_url, params={'puuid': match_info['metadata']['participants'][i]},  json=per_summoner_info)
             #db에 저장하고
             per_match_info = {
                 "gameMode": match_info['info']['gameMode'],
@@ -190,7 +193,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 "teamPurpleRiftheraldKills": match_info['info']['teams'][1]['objectives']['riftHerald']['kills'],
                 "teamPurpleTowerKills": match_info['info']['teams'][1]['objectives']['tower']['kills'],
             }
-            match_result = requests.post(append_match_info_url, json = per_match_info)
+            match_result = requests.put(append_match_info_url, json = per_match_info)
             st.write(match_result)
             
 

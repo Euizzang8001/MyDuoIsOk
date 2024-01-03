@@ -1,4 +1,6 @@
-def match_info(match) -> dict:
+import json
+
+def match_info(match) -> json:
     return{
         "gameMode": match['gameMode'],
         "matchId": match['matchId'],
@@ -37,7 +39,7 @@ def match_info(match) -> dict:
         "teamPurpleTowerKills": match['teamPurpleTowerKills']
     }
 
-def summoner_info(summoner) -> dict:
+def summoner_info(summoner) -> json:
     return{
         "matchId": summoner['matchId'],
         "assists": summoner['assists'],
@@ -50,6 +52,7 @@ def summoner_info(summoner) -> dict:
         "kills": summoner['kills'],
         "lane": summoner['lane'],
         "summonerName": summoner['summonerName'],
+        "riotIdGameName": summoner['riotIdGameName'],
         "riotIdTagline": summoner['riotIdTagline'],
         "role": summoner['role'],
         "teamId": summoner['teamId'],

@@ -50,6 +50,7 @@ class SummonerBase(BaseModel):
     kills: int
     lane: str
     summonerName: str
+    riotIdGameName: str
     riotIdTagline: str
     role: str
     teamId: int
