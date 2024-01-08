@@ -251,13 +251,48 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     st.write('<p style="text-align: center; font-size: 2;">Blue Team Win</p>', unsafe_allow_html=True)
 
             with st.container():
-                with st.container(border = True):
-                    st.write(f"<p style='text-align: center; font-size: 2;'>Gold: {per_match_info['teamBlueGold']}{'__'}바론: {per_match_info['teamBlueBaronKills']}{'__'}챔피언: {per_match_info['teamBlueChampionKills']}{'__'}드래곤: {per_match_info['teamBlueDragonKills']}{'__'}억제기: {per_match_info['teamBlueInhibitorKills']}{'__'}전령: {per_match_info['teamBlueRiftheraldKills']}{'__'}타워: {per_match_info['teamBlueTowerKills']}</p>", unsafe_allow_html=True)
+               with st.container(border = True):
+                    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+                    with col1:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Gold", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamBlueGold']}", unsafe_allow_html=True)
+                    with col2:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Baron", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamBlueBaronKills']}", unsafe_allow_html=True)
+                    with col3:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Kills", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamBlueChampionKills']}", unsafe_allow_html=True)
+                    with col4:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Dragon", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamBlueDragonKills']}", unsafe_allow_html=True)
+                    with col5:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Inhibitor", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamBlueInhibitorKills']}", unsafe_allow_html=True)
+                    with col6:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Rift Herald", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamBlueRiftheraldKills']}", unsafe_allow_html=True)
+                    with col7:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Tower", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamBlueTowerKills']}", unsafe_allow_html=True)
             
             #여기는 챔피언픽(사진), 소환사 이름, 소환사 태그, 벤픽(사진)
             with st.container():
                 with st.container():
-                    st.write('Blue team banpick')
+                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Ban & Pick</p>', unsafe_allow_html=True)
         #게임 요약 부분(team Purple)
         with st.container(border = True):
             with st.container():
@@ -268,12 +303,47 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
 
             with st.container():
                 with st.container(border = True):
-                    st.write(f"<p style='text-align: center; font-size: 2;'>Gold: {per_match_info['teamPurpleGold']}{'__'}바론: {per_match_info['teamBlueBaronKills']}{'__'}챔피언: {per_match_info['teamPurpleChampionKills']}{'__'}드래곤: {per_match_info['teamPurpleDragonKills']}{'__'}억제기: {per_match_info['teamPurpleInhibitorKills']}{'__'}전령: {per_match_info['teamPurpleRiftheraldKills']}{'__'}타워: {per_match_info['teamPurpleTowerKills']}</p>", unsafe_allow_html=True)
-            
+                    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+                    with col1:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Gold", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleGold']}", unsafe_allow_html=True)
+                    with col2:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Baron", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleBaronKills']}", unsafe_allow_html=True)
+                    with col3:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Kills", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleChampionKills']}", unsafe_allow_html=True)
+                    with col4:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Dragon", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleDragonKills']}", unsafe_allow_html=True)
+                    with col5:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Inhibitor", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleInhibitorKills']}", unsafe_allow_html=True)
+                    with col6:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Rift Herald", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleRiftheraldKills']}", unsafe_allow_html=True)
+                    with col7:
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>Tower", unsafe_allow_html=True)
+                        with st.container():
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleTowerKills']}", unsafe_allow_html=True)
+
             #여기는 챔피언픽(사진), 소환사 이름, 소환사 태그, 벤픽(사진)
             with st.container():
                 with st.container():
-                    st.write('Purple team banpick')
+                    st.write('<p style="text-align: center; font-size: 2;">Purple Team Ban & Pick</p>', unsafe_allow_html=True)
                 
         # 각 플레이어마다의 요약 정보
         for i in range(len(summoner_list)):
