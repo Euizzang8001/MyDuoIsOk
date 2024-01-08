@@ -230,9 +230,8 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 "teamPurpleTowerKills": match_info['info']['teams'][1]['objectives']['tower']['kills'],
             }
             match_result = requests.post(append_match_info_url, json = per_match_info)
-        get_match_info_url = back_url + f'/get-matchinfo/{match}'
-        per_match_info = requests.get(get_match_info_url, params = {'match_id' : match}).json()
-        st.write(per_match_info)
+        get_matchinfo_from_db_url = back_url + f'/get-matchinfo-from-db/{match}'
+        per_match_info = requests.get(get_matchinfo_from_db_url, params = {'match_id' : match}).json()
         summoner_list_per_match = []
         for j in range(len(summoner_list)):
             get_summoner_from_db_url = back_url + f'/get-summonerinfo-from-db/{summoner_puuid_list[j]}/{match}'
@@ -243,23 +242,43 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
     # matchId 마다의 container
     with st.container(border = True):
         st.write(f"Game Time: {per_match_info['gameDuration']//60}:{per_match_info['gameDuration']%60}")
-        #게임 요약 부분
+        #게임 요약 부분(team Blue)
         with st.container(border = True):
-            col1, col2, col3, col4 = st.columns([0.5, 2.5, 2.5, 0.5])
-            with col1:
-                st.write('Blue Team')
-                st.write('')
-            with col2:
-                st.write('huhu')
-            with col3:
-                st.write('haha')
-            with col4:
-                st.write('hugugugugu')
+            with st.container():
+                if per_match_info['teamBlueWin'] == 0:
+                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Defeat</p>', unsafe_allow_html=True)
+                else:
+                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Win</p>', unsafe_allow_html=True)
+
+            with st.container():
+                with st.container(border = True):
+                    st.write(f"<p style='text-align: center; font-size: 2;'>Gold: {per_match_info['teamBlueGold']}{'__'}바론: {per_match_info['teamBlueBaronKills']}{'__'}챔피언: {per_match_info['teamBlueChampionKills']}{'__'}드래곤: {per_match_info['teamBlueDragonKills']}{'__'}억제기: {per_match_info['teamBlueInhibitorKills']}{'__'}전령: {per_match_info['teamBlueRiftheraldKills']}{'__'}타워: {per_match_info['teamBlueTowerKills']}</p>", unsafe_allow_html=True)
+            
+            #여기는 챔피언픽(사진), 소환사 이름, 소환사 태그, 벤픽(사진)
+            with st.container():
+                with st.container():
+                    st.write('Blue team banpick')
+        #게임 요약 부분(team Purple)
+        with st.container(border = True):
+            with st.container():
+                if per_match_info['teamBlueWin'] == 0:
+                    st.write('<p style="text-align: center; font-size: 2;">Blue Purple win</p>', unsafe_allow_html=True)
+                else:
+                    st.write('<p style="text-align: center; font-size: 2;">Blue Purple Defeat</p>', unsafe_allow_html=True)
+
+            with st.container():
+                with st.container(border = True):
+                    st.write(f"<p style='text-align: center; font-size: 2;'>Gold: {per_match_info['teamPurpleGold']}{'__'}바론: {per_match_info['teamBlueBaronKills']}{'__'}챔피언: {per_match_info['teamPurpleChampionKills']}{'__'}드래곤: {per_match_info['teamPurpleDragonKills']}{'__'}억제기: {per_match_info['teamPurpleInhibitorKills']}{'__'}전령: {per_match_info['teamPurpleRiftheraldKills']}{'__'}타워: {per_match_info['teamPurpleTowerKills']}</p>", unsafe_allow_html=True)
+            
+            #여기는 챔피언픽(사진), 소환사 이름, 소환사 태그, 벤픽(사진)
+            with st.container():
+                with st.container():
+                    st.write('Purple team banpick')
                 
         # 각 플레이어마다의 요약 정보
         for i in range(len(summoner_list)):
             with st.container(border = True):
-                st.write(f'{i} contatiner')
+                st.write(f"{summoner_list[i]}")
     
 
     
