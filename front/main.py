@@ -143,15 +143,15 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "win": match_info['info']['participants'][i]['win'],
                         "visionScore": match_info['info']['participants'][i]['visionScore'],
 
-                        "versusassists": -same_lane_enemey[lane_list[i]][0],
-                        "versuschampLevel" :-same_lane_enemey[lane_list[i]][1],
-                        "versusdeaths":-same_lane_enemey[lane_list[i]][2],
-                        "versusgoldEarned":-same_lane_enemey[lane_list[i]][3],
-                        "versuskills":-same_lane_enemey[lane_list[i]][4],
-                        "versusTDDTC":-same_lane_enemey[lane_list[i]][5],
-                        "versusTH":-same_lane_enemey[lane_list[i]][6],
-                        "versusTTCCD":-same_lane_enemey[lane_list[i]][7],
-                        "versusVS": -same_lane_enemey[lane_list[i]][8],
+                        "versusassists": same_lane_enemey[lane_list[i]][0],
+                        "versuschampionLevel" :same_lane_enemey[lane_list[i]][1],
+                        "versusdeaths":same_lane_enemey[lane_list[i]][2],
+                        "versusgoldEarned":same_lane_enemey[lane_list[i]][3],
+                        "versuskills":same_lane_enemey[lane_list[i]][4],
+                        "versusTDDTC":same_lane_enemey[lane_list[i]][5],
+                        "versusTH":same_lane_enemey[lane_list[i]][6],
+                        "versusTTCCD":same_lane_enemey[lane_list[i]][7],
+                        "versusVS": same_lane_enemey[lane_list[i]][8],
                     }
                 if per_summoner_info['teamId'] not in goldSum:
                     goldSum[per_summoner_info['teamId']] = 0
@@ -184,7 +184,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 "teamBlueRiftheraldKills": match_info['info']['teams'][0]['objectives']['riftHerald']['kills'],
                 "teamBlueTowerKills": match_info['info']['teams'][0]['objectives']['tower']['kills'],
                 "teamPurpleId": match_info['info']['teams'][1]['teamId'],
-                "teamBlueBan": list(match_info['info']['teams'][1]['bans'][i]['championId'] for i in range(5)),
+                "teamPurpleBan": list(match_info['info']['teams'][1]['bans'][i]['championId'] for i in range(5)),
                 "teamPurpleWin": match_info['info']['teams'][1]['win'],
                 "teamPurpleGold": goldSum[match_info['info']['teams'][1]['teamId']],
                 "teamPurpleBaronKills": match_info['info']['teams'][1]['objectives']['baron']['kills'],

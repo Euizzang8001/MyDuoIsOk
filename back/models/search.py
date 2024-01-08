@@ -2,6 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 class MatchInfoBase(BaseModel):
+    gameMode : str
     matchId: str
     summonerOnePuuid: str
     summonerTwoPuuid : str
@@ -13,8 +14,6 @@ class MatchInfoBase(BaseModel):
     summonerEightPuuid : str
     summonerNinePuuid : str
     summonerTenPuuid : str
-
-    gameMode : str
 
     teamBlueId : int
     teamBlueBan: list
