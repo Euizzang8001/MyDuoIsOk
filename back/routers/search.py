@@ -36,7 +36,7 @@ async def append_match_info(match_info: MatchInfoBase, service: SummonerService 
     return result
 
 @router.put('/append-summonerinfo/{puuid}') #summoner table에 새로운 match data 입력
-async def append_summoner_info( puuid: str(72), summoner_info: SummonerBase, service: SummonerService = Depends()):
+async def append_summoner_info( puuid: str, summoner_info: SummonerBase, service: SummonerService = Depends()):
     result = service.append_summoner_info(puuid = puuid, summoner_info = summoner_info)
     return result
 

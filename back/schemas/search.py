@@ -5,6 +5,7 @@ def match_info(match) -> json:
         "Id": str(match['_id']),
         "gameMode": match['gameMode'],
         "matchId": match['matchId'],
+        "gameDuration": match['gameDuration'],
 
         "summonerOnePuuid": match['summonerOnePuuid'],
         "summonerTwoPuuid": match['summonerTwoPuuid'],

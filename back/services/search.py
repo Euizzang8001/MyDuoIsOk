@@ -31,7 +31,8 @@ class SummonerService():
         match_info = self.repository.append_match_info(match_info)
         return match_info
 
-    def append_summoner_info(self, puuid: str(72), summoner_info : SummonerBase):
+    def append_summoner_info(self, puuid: str, summoner_info : SummonerBase):
+        print(puuid)
         summoner_info = self.repository.append_summoner_info(puuid = puuid, summoner_dto=summoner_info)
         return summoner_info
     

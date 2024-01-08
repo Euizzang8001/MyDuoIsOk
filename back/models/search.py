@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class MatchInfoBase(BaseModel):
     gameMode : str
     matchId: str
+    gameDuration : str
     summonerOnePuuid: str
     summonerTwoPuuid : str
     summonerThreePuuid : str

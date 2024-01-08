@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 import datetime
+import json
+import os
 
 back_url = 'http://127.0.0.1:8000/myduoisok'
 get_puuid_url = back_url + '/get-summoner'
@@ -9,6 +11,8 @@ get_match_info_url = back_url + '/get-matchinfo'
 check_match_in_db_url = back_url + '/check-match-in-db'
 append_match_info_url = back_url + '/append-matchinfo'
 
+champion_json = open('champion.json', 'r', encoding='utf-8')
+champion_data = champion_json.read()
 
 st.title('My Duo Is OK..? :frowning:')
     
@@ -27,7 +31,6 @@ match_id_list = []
 
 if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db에 저장하고 불러오기
     summoner_nospace = ''.join(i for i in summoner if not i.isspace())
-    st.write(summoner_nospace)
     summoner_list = list(summoner_nospace.split(','))
     st.write(summoner_list)
     for summoner_name in summoner_list:
@@ -45,18 +48,19 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
         match = match_id_list[0]
         goldSum = {}
         #db에 있는지 확인하고
-        match_in_db= requests.get(check_match_in_db_url, params={'match_id': match}).json()
+        match_in_db = requests.get(check_match_in_db_url, params={'match_id': match}).json()
         if not match_in_db:
             #정보 라이엇으로부터 가져오고
             match_info = requests.get(get_match_info_url, params={'match_id': match}).json()
             same_lane_enemey = {}
             lane_list = []
             for i in range(10):
-                if match_info['info']['participants'][i]['lane'] == 'TOP':
+                lane_str = match_info['info']['participants'][i]['teamPosition']
+                if lane_str == 'TOP':
                     lane = 0
-                elif match_info['info']['participants'][i]['lane'] == 'JUNGLE':
+                elif lane_str == 'JUNGLE':
                     lane = 1
-                elif match_info['info']['participants'][i]['lane'] == 'MIDDLE':
+                elif lane_str == 'MIDDLE':
                     lane = 2
                 elif match_info['info']['participants'][i]['role'] == 'CARRY':
                     lane = 3
@@ -85,6 +89,16 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     same_lane_enemey[lane][7] -= match_info['info']['participants'][i]['totalTimeCCDealt']
                     same_lane_enemey[lane][8] -= match_info['info']['participants'][i]['visionScore']
             for i in range(10):
+                if 'riotIdGameName' in match_info['info']['participants'][i]:
+                    riotIdGameName = match_info['info']['participants'][i]['riotIdGameName']
+                else: 
+                    riotIdGameName = match_info['info']['participants'][i]['summonerName']
+
+                if 'riotIdTagline' in match_info['info']['participants'][i]:
+                    riotIdTagline = match_info['info']['participants'][i]['riotIdTagline']
+                else: 
+                    riotIdTagline = 'KR1'
+
                 if i < 5:
                     per_summoner_info = {
                         "matchId": match,
@@ -96,10 +110,10 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "goldEarned": match_info['info']['participants'][i]['goldEarned'],
                         "goldSpent": match_info['info']['participants'][i]['goldSpent'],
                         "kills": match_info['info']['participants'][i]['kills'],
-                        "lane": match_info['info']['participants'][i]['lane'],
+                        "lane": match_info['info']['participants'][i]['teamPosition'],
                         "summonerName": match_info['info']['participants'][i]['summonerName'],
-                        "riotIdGameName":  match_info['info']['participants'][i]['riotIdGameName'],
-                        "riotIdTagline":  match_info['info']['participants'][i]['riotIdTagline'],
+                        "riotIdGameName":  riotIdGameName,
+                        "riotIdTagline":  riotIdTagline,
                         "role": match_info['info']['participants'][i]['role'],
                         "teamId": match_info['info']['participants'][i]['teamId'],
                         "totalDamageDealtToChampions":match_info['info']['participants'][i]['totalDamageDealtToChampions'],
@@ -129,7 +143,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "goldEarned": match_info['info']['participants'][i]['goldEarned'],
                         "goldSpent": match_info['info']['participants'][i]['goldSpent'],
                         "kills": match_info['info']['participants'][i]['kills'],
-                        "lane": match_info['info']['participants'][i]['lane'],
+                        "lane": match_info['info']['participants'][i]['teamPosition'],
                         "summonerName": match_info['info']['participants'][i]['summonerName'],
                         "riotIdGameName":  match_info['info']['participants'][i]['riotIdGameName'],
                         "riotIdTagline":  match_info['info']['participants'][i]['riotIdTagline'],
@@ -155,12 +169,12 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     goldSum[per_summoner_info['teamId']] = 0
                 goldSum[per_summoner_info['teamId']] += per_summoner_info['goldEarned']
                 append_summoner_info_url = back_url + f"/append-summonerinfo/{match_info['metadata']['participants'][i]}"
-                st.write(match_info['metadata']['participants'][i])
                 result = requests.put(append_summoner_info_url, params={'puuid': match_info['metadata']['participants'][i]},  json=per_summoner_info)
             #db에 저장하고
             per_match_info = {
                 "gameMode": match_info['info']['gameMode'],
                 'matchId':  match,
+                "gameDuration": match_info['info']['gameDuration'],
                 'summonerOnePuuid': match_info['metadata']['participants'][0],
                 'summonerTwoPuuid': match_info['metadata']['participants'][1],
                 'summonerThreePuuid': match_info['metadata']['participants'][2],
@@ -219,18 +233,32 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
         get_match_info_url = back_url + '/get-matchinfo'
         per_match_info = requests.get(get_match_info_url, params = {'match_id' : match}).json()
         summoner_list_per_match = []
-        # for i in range(len(summoner_list)):
-        #     get_summoner_from_db_url = back_url + 
-        #     summoner_list_per_match.append(requests.get(get_match_info_url, params = {'match_id' : match}).json())
+        for j in range(len(summoner_list)):
+            get_summoner_from_db_url = back_url + f'/get-summonerinfo-from-db/{summoner_puuid_list[j]}/{match}'
+            summoner_list_per_match.append(requests.get(get_summoner_from_db_url, params = {'puuid': summoner_puuid_list[j],'match_id' : match}).json())
 
 
-
-
-        #db에서 match정보 불러오기
-        #db에서 match에 있는 소환사 10명의 정보 불러오기 
-        #champion.json나 다른 정보들에 따라 코드 작성
-            
-    
+        #champion.json와 다른 정보에 따라 코드 작성
+    # matchId 마다의 container
+    with st.container(border = True):
+        st.write(f"Game Time: {per_match_info['gameDuration']//60}:{per_match_info['gameDuration']%60}")
+        #게임 요약 부분
+        with st.container(border = True):
+            col1, col2, col3, col4 = st.columns([0.5, 2.5, 2.5, 0.5])
+            with col1:
+                st.write('Blue Team')
+                st.write('')
+            with col2:
+                st.write('huhu')
+            with col3:
+                st.write('haha')
+            with col4:
+                st.write('hugugugugu')
+                
+        # 각 플레이어마다의 요약 정보
+        for i in range(len(summoner_list)):
+            with st.container(border = True):
+                st.write(f'{i} contatiner')
     
 
     

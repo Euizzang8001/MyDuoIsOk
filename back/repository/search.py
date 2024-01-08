@@ -50,7 +50,7 @@ class SummonerRepository():
             return {'success': False}
         
         
-    def append_summoner_info(self,  puuid: str(72), summoner_dto: SummonerBase): 
+    def append_summoner_info(self, puuid: str, summoner_dto: SummonerBase): 
         collection_name = self.db[puuid]
         result = collection_name.insert_one(dict(summoner_dto))
         if result:
