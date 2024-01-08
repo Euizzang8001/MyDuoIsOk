@@ -230,8 +230,9 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 "teamPurpleTowerKills": match_info['info']['teams'][1]['objectives']['tower']['kills'],
             }
             match_result = requests.post(append_match_info_url, json = per_match_info)
-        get_match_info_url = back_url + '/get-matchinfo'
+        get_match_info_url = back_url + f'/get-matchinfo/{match}'
         per_match_info = requests.get(get_match_info_url, params = {'match_id' : match}).json()
+        st.write(per_match_info)
         summoner_list_per_match = []
         for j in range(len(summoner_list)):
             get_summoner_from_db_url = back_url + f'/get-summonerinfo-from-db/{summoner_puuid_list[j]}/{match}'

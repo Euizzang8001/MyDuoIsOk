@@ -50,7 +50,7 @@ async def delete_summoner_match_info(match_id: str, puuid: str, service: Summone
     result = service.delete_summoner_match_info(match_id=match_id, puuid=puuid)
     return result
 
-@router.get('/check-match-in-db')
+@router.get('/check-match-in-db/{matchId}')
 async def check_match_in_db(match_id: str, service : SummonerService=Depends()):
     result = service.check_match_in_db(match_id = match_id)
     if result == True:
