@@ -36,7 +36,7 @@ async def append_match_info(match_info: MatchInfoBase, service: SummonerService 
     return result
 
 @router.put('/append-summonerinfo/{puuid}') #summoner table에 새로운 match data 입력
-async def append_summoner_info(puuid:str, summoner_info: SummonerBase, service: SummonerService = Depends()):
+async def append_summoner_info( puuid: str(72), summoner_info: SummonerBase, service: SummonerService = Depends()):
     result = service.append_summoner_info(puuid = puuid, summoner_info = summoner_info)
     return result
 
@@ -59,8 +59,8 @@ async def check_match_in_db(match_id: str, service : SummonerService=Depends()):
         return False
 
 @router.get('/get-summonerinfo-from-db/{puuid}/{matchId}')
-async def get_summoner_from_db(match_id: str, puuid: str, service: SummonerService = Depends()):
-    result = service.get_summoner_from_db(match_id = match_id, puuid = puuid)
+async def get_summoner_from_db(puuid: str, match_id: str, service: SummonerService = Depends()):
+    result = service.get_summoner_from_db(puuid = puuid, match_id = match_id)
     return result
 
 @router.get('/get-matchinfo-from-db/{matchId}')

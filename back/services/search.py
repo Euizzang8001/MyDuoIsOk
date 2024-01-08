@@ -31,7 +31,7 @@ class SummonerService():
         match_info = self.repository.append_match_info(match_info)
         return match_info
 
-    def append_summoner_info(self, puuid: str, summoner_info : SummonerBase):
+    def append_summoner_info(self, puuid: str(72), summoner_info : SummonerBase):
         summoner_info = self.repository.append_summoner_info(puuid = puuid, summoner_dto=summoner_info)
         return summoner_info
     
@@ -49,8 +49,8 @@ class SummonerService():
             return True
         return False
     
-    def get_summoner_from_db(self, match_id: str, puuid: str):
-        result = self.repository.get_summoner_from_db(match_id = match_id, puuid = puuid)
+    def get_summoner_from_db(self, puuid: str, match_id: str):
+        result = self.repository.get_summoner_from_db(puuid = puuid, match_id = match_id)
         return result
     
     def get_match_from_db(self, match_id: str):

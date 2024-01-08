@@ -50,7 +50,7 @@ class SummonerRepository():
             return {'success': False}
         
         
-    def append_summoner_info(self, puuid: str, summoner_dto: SummonerBase): 
+    def append_summoner_info(self,  puuid: str(72), summoner_dto: SummonerBase): 
         collection_name = self.db[puuid]
         result = collection_name.insert_one(dict(summoner_dto))
         if result:
@@ -84,14 +84,16 @@ class SummonerRepository():
 
     def get_summoner_from_db(self, match_id: str, puuid: str):
         collection_name = self.db[puuid]
-        result = collection_name.find({'matchId': match_id})
+        result = collection_name.find_one({"matchId": match_id})
+        if result:
+            result['_id'] = str(result['_id'])
         return result
 
 
     def get_match_from_db(self, match_id: str):
         collection_name = self.db['match']
-        result = collection_name.find({'matchId': match_id})
+        result = collection_name.find_one({'matchId': match_id})
+        if result:
+            result['_id'] = str(result['_id'])
         return result
-
-
 
