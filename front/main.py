@@ -18,7 +18,6 @@ explain3 = 'So you can feel more excited with this info!'
 st.write(explain1)
 st.write(explain2)
 st.write(explain3)
-
 summoner = st.text_input('Write The Summoner Name')
 search_summoner = st.button('Search')
 
@@ -47,11 +46,11 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
         goldSum = {}
         #db에 있는지 확인하고
         match_in_db= requests.get(check_match_in_db_url, params={'match_id': match}).json()
-        lane_list = []
         if not match_in_db:
             #정보 라이엇으로부터 가져오고
             match_info = requests.get(get_match_info_url, params={'match_id': match}).json()
             same_lane_enemey = {}
+            lane_list = []
             for i in range(10):
                 if match_info['info']['participants'][i]['lane'] == 'TOP':
                     lane = 0
@@ -85,7 +84,6 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     same_lane_enemey[lane][6] -= match_info['info']['participants'][i]['totalHeal']
                     same_lane_enemey[lane][7] -= match_info['info']['participants'][i]['totalTimeCCDealt']
                     same_lane_enemey[lane][8] -= match_info['info']['participants'][i]['visionScore']
-            st.write(same_lane_enemey)
             for i in range(10):
                 if i < 5:
                     per_summoner_info = {
@@ -156,7 +154,6 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 if per_summoner_info['teamId'] not in goldSum:
                     goldSum[per_summoner_info['teamId']] = 0
                 goldSum[per_summoner_info['teamId']] += per_summoner_info['goldEarned']
-                st.write(per_summoner_info)
                 append_summoner_info_url = back_url + f"/append-summonerinfo/{match_info['metadata']['participants'][i]}"
                 result = requests.put(append_summoner_info_url, params={'puuid': match_info['metadata']['participants'][i]},  json=per_summoner_info)
             #db에 저장하고
@@ -173,6 +170,29 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 'summonerEightPuuid': match_info['metadata']['participants'][7],
                 'summonerNinePuuid': match_info['metadata']['participants'][8],
                 'summonerTenPuuid': match_info['metadata']['participants'][9],
+
+                'summonerOneriotIdGameName': match_info['info']['participants'][0]['riotIdGameName'],
+                'summonerTworiotIdGameName': match_info['info']['participants'][1]['riotIdGameName'],
+                'summonerThreeriotIdGameName': match_info['info']['participants'][2]['riotIdGameName'],
+                'summonerFourriotIdGameName': match_info['info']['participants'][3]['riotIdGameName'],
+                'summonerFiveriotIdGameName': match_info['info']['participants'][4]['riotIdGameName'],
+                'summonerSixriotIdGameName': match_info['info']['participants'][5]['riotIdGameName'],
+                'summonerSevenriotIdGameName': match_info['info']['participants'][6]['riotIdGameName'],
+                'summonerEightriotIdGameName': match_info['info']['participants'][7]['riotIdGameName'],
+                'summonerNineriotIdGameName': match_info['info']['participants'][8]['riotIdGameName'],
+                'summonerTenriotIdGameName': match_info['info']['participants'][9]['riotIdGameName'],
+
+                'summonerOneriotIdTagline': match_info['info']['participants'][0]['riotIdTagline'],
+                'summonerTworiotIdTagline': match_info['info']['participants'][1]['riotIdTagline'],
+                'summonerThreeriotIdTagline':match_info['info']['participants'][2]['riotIdTagline'],
+                'summonerFourriotIdTagline':match_info['info']['participants'][3]['riotIdTagline'],
+                'summonerFiveriotIdTagline': match_info['info']['participants'][4]['riotIdTagline'],
+                'summonerSixriotIdTagline': match_info['info']['participants'][5]['riotIdTagline'],
+                'summonerSevenriotIdTagline': match_info['info']['participants'][6]['riotIdTagline'],
+                'summonerEightriotIdTagline': match_info['info']['participants'][7]['riotIdTagline'],
+                'summonerNineriotIdTagline': match_info['info']['participants'][8]['riotIdTagline'],
+                'summonerTenriotIdTagline': match_info['info']['participants'][9]['riotIdTagline'],
+
                 "teamBlueId": match_info['info']['teams'][0]['teamId'],
                 "teamBlueBan": list(match_info['info']['teams'][0]['bans'][i]['championId'] for i in range(5)),
                 "teamBlueWin": match_info['info']['teams'][0]['win'],
@@ -195,8 +215,14 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 "teamPurpleTowerKills": match_info['info']['teams'][1]['objectives']['tower']['kills'],
             }
             match_result = requests.post(append_match_info_url, json = per_match_info)
-            st.write(match_result)
-            
+        get_match_info_url = back_url + '/get-matchinfo'
+        per_match_info = requests.get(get_match_info_url, params = {'match_id' : match}).json()
+        summoner_list_per_match = []
+        for i in range(len(summoner_list)):
+            get_summoner_from_db_url = back_url + 
+            summoner_list_per_match.append(requests.get(get_match_info_url, params = {'match_id' : match}).json())
+
+
 
 
         #db에서 match정보 불러오기

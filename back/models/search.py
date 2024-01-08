@@ -15,6 +15,28 @@ class MatchInfoBase(BaseModel):
     summonerNinePuuid : str
     summonerTenPuuid : str
 
+    summonerOneriotIdGameName: str
+    summonerTworiotIdGameName : str
+    summonerThreeriotIdGameName : str
+    summonerFourriotIdGameName : str
+    summonerFiveriotIdGameName : str
+    summonerSixriotIdGameName : str
+    summonerSevenriotIdGameName : str
+    summonerEightriotIdGameName : str
+    summonerNineriotIdGameName : str
+    summonerTenriotIdGameName : str
+
+    summonerOneriotIdTagline: str
+    summonerTworiotIdTagline : str
+    summonerThreeriotIdTagline : str
+    summonerFourriotIdTagline : str
+    summonerFiveriotIdTagline : str
+    summonerSixriotIdTagline : str
+    summonerSevenriotIdTagline : str
+    summonerEightriotIdTagline : str
+    summonerNineriotIdTagline : str
+    summonerTenriotIdTagline : str
+
     teamBlueId : int
     teamBlueBan: list
     teamBlueWin : int

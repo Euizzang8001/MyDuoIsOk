@@ -57,3 +57,13 @@ async def check_match_in_db(match_id: str, service : SummonerService=Depends()):
         return True
     else:
         return False
+
+@router.get('/get-summonerinfo-from-db/{puuid}/{matchId}')
+async def get_summoner_from_db(match_id: str, puuid: str, service: SummonerService = Depends()):
+    result = service.get_summoner_from_db(match_id = match_id, puuid = puuid)
+    return result
+
+@router.get('/get-matchinfo-from-db/{matchId}')
+async def get_match_from_db(match_id: str, service: SummonerService = Depends()):
+    result = service.get_match_from_db(match_id = match_id)
+    return result

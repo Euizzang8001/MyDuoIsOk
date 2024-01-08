@@ -49,3 +49,11 @@ class SummonerService():
             return True
         return False
     
+    def get_summoner_from_db(self, match_id: str, puuid: str):
+        result = self.repository.get_summoner_from_db(match_id = match_id, puuid = puuid)
+        return result
+    
+    def get_match_from_db(self, match_id: str):
+        result = self.repository.get_match_from_db(match_id = match_id)
+        return result
+    

@@ -82,5 +82,16 @@ class SummonerRepository():
         else:
             return False
 
+    def get_summoner_from_db(self, match_id: str, puuid: str):
+        collection_name = self.db[puuid]
+        result = collection_name.find({'matchId': match_id})
+        return result
+
+
+    def get_match_from_db(self, match_id: str):
+        collection_name = self.db['match']
+        result = collection_name.find({'matchId': match_id})
+        return result
+
 
 
