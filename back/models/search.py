@@ -92,7 +92,7 @@ class SummonerBase(BaseModel):
     totalTimeCCDealt: int
     win: bool
     visionScore: int
-    versusassists: int
+    versusassists: int  
     versuschampionLevel :int
     versusdeaths:int
     versusgoldEarned:int

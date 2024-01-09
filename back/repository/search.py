@@ -29,7 +29,7 @@ class SummonerRepository():
         return summoner_account['puuid']
     
     def get_summoner_match(self, puuid: str) -> List[str]: #player_name -> player의 match_id return
-        requests_url = f"https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start={1}&count={100}"
+        requests_url = f"https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start={0}&count={100}"
         result = requests.get(requests_url, headers=headers)
         result.raise_for_status()
         match_id = result.json()
