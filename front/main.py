@@ -4,6 +4,7 @@ import datetime
 import json
 import os
 from PIL import Image
+import io
 
 back_url = 'http://127.0.0.1:8000/myduoisok'
 get_puuid_url = back_url + '/get-summoner'
@@ -311,26 +312,27 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     st.write('<p style="text-align: center; font-size: 2;">Blue Team Ban & Pick</p>', unsafe_allow_html=True)
                 for k in range(5):
                     with st.container():
-                        col1, col2, col3 = st.columns([0.5, 2, 0.5])
+                        col1, col2, col3 = st.columns([0.2, 2, 0.2])
                         with col1:
                             per_summoner_champion_per_match = per_match_info[f'summoner{number_list[k]}ChampionName']
                             champion_image_url = image_url + per_summoner_champion_per_match + '.png'
                             champion_image = requests.get(champion_image_url, stream=True)
-                            st.image(champion_image, caption = per_summoner_champion_per_match, use_column_width = True)
+                            st.image(champion_image.content, use_column_width = True)
                         with col2:
                             per_summoner_name = per_match_info[f'summoner{number_list[k]}riotIdGameName']
                             per_summoner_tagline = per_match_info[f'summoner{number_list[k]}riotIdTagline']
                             st.write(f"<p style='text-align: center; font-size: 2;'>{per_summoner_name}{per_summoner_tagline}</p>", unsafe_allow_html=True)
                         with col3:
-                            per_summoer_ban_key = per_match_info['teamBlueBan'][k]
+                            per_summoner_ban_key = per_match_info['teamBlueBan'][k]
+                            st.write(per_summoner_ban_key)
+                            per_summoner_ban = str(0)
                             for champion_key in champion_data['data']:
-                                if champion_key['key'] ==  per_summoer_ban_key:
-                                    per_summoner_ban = champion_key['name']
+                                st.write(champion_data['data'][champion_key]['key'])
+                                if champion_data['data'][champion_key]['key'] ==  per_summoner_ban_key:
+                                    per_summoner_ban = champion_data['data'][champion_key]['name']
+                                    st.write(per_summoner_ban)
                                     break
                             ban_image_url = image_url + per_summoner_ban + '.png'
-                            ban_image = requests.get(ban_image_url, stream=True)
-                            ban_image = ban_image.convert("L")
-                            st.image(ban_image, caption=f"{number_list[i]} ban", use_column_width=True)
                             
         #게임 요약 부분(team Red)
         with st.container(border = True):
