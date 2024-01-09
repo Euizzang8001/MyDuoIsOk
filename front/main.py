@@ -46,6 +46,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
     else:
         #일단 가장 최신 전적만 해보자
         match = match_id_list[0]
+        st.write(match)
         goldSum = {}
         #db에 있는지 확인하고
         match_in_db = requests.get(check_match_in_db_url, params={'match_id': match}).json()
@@ -218,16 +219,16 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 "teamBlueInhibitorKills": match_info['info']['teams'][0]['objectives']['inhibitor']['kills'],
                 "teamBlueRiftheraldKills": match_info['info']['teams'][0]['objectives']['riftHerald']['kills'],
                 "teamBlueTowerKills": match_info['info']['teams'][0]['objectives']['tower']['kills'],
-                "teamPurpleId": match_info['info']['teams'][1]['teamId'],
-                "teamPurpleBan": list(match_info['info']['teams'][1]['bans'][i]['championId'] for i in range(5)),
-                "teamPurpleWin": match_info['info']['teams'][1]['win'],
-                "teamPurpleGold": goldSum[match_info['info']['teams'][1]['teamId']],
-                "teamPurpleBaronKills": match_info['info']['teams'][1]['objectives']['baron']['kills'],
-                "teamPurpleChampionKills": match_info['info']['teams'][1]['objectives']['champion']['kills'],
-                "teamPurpleDragonKills": match_info['info']['teams'][1]['objectives']['dragon']['kills'],
-                "teamPurpleInhibitorKills": match_info['info']['teams'][1]['objectives']['inhibitor']['kills'],
-                "teamPurpleRiftheraldKills": match_info['info']['teams'][1]['objectives']['riftHerald']['kills'],
-                "teamPurpleTowerKills": match_info['info']['teams'][1]['objectives']['tower']['kills'],
+                "teamRedId": match_info['info']['teams'][1]['teamId'],
+                "teamRedBan": list(match_info['info']['teams'][1]['bans'][i]['championId'] for i in range(5)),
+                "teamRedWin": match_info['info']['teams'][1]['win'],
+                "teamRedGold": goldSum[match_info['info']['teams'][1]['teamId']],
+                "teamRedBaronKills": match_info['info']['teams'][1]['objectives']['baron']['kills'],
+                "teamRedChampionKills": match_info['info']['teams'][1]['objectives']['champion']['kills'],
+                "teamRedDragonKills": match_info['info']['teams'][1]['objectives']['dragon']['kills'],
+                "teamRedInhibitorKills": match_info['info']['teams'][1]['objectives']['inhibitor']['kills'],
+                "teamRedRiftheraldKills": match_info['info']['teams'][1]['objectives']['riftHerald']['kills'],
+                "teamRedTowerKills": match_info['info']['teams'][1]['objectives']['tower']['kills'],
             }
             match_result = requests.post(append_match_info_url, json = per_match_info)
         get_matchinfo_from_db_url = back_url + f'/get-matchinfo-from-db/{match}'
@@ -293,13 +294,13 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
             with st.container():
                 with st.container():
                     st.write('<p style="text-align: center; font-size: 2;">Blue Team Ban & Pick</p>', unsafe_allow_html=True)
-        #게임 요약 부분(team Purple)
+        #게임 요약 부분(team Red)
         with st.container(border = True):
             with st.container():
                 if per_match_info['teamBlueWin'] == 0:
-                    st.write('<p style="text-align: center; font-size: 2;">Blue Purple win</p>', unsafe_allow_html=True)
+                    st.write('<p style="text-align: center; font-size: 2;">Red Team win</p>', unsafe_allow_html=True)
                 else:
-                    st.write('<p style="text-align: center; font-size: 2;">Blue Purple Defeat</p>', unsafe_allow_html=True)
+                    st.write('<p style="text-align: center; font-size: 2;">Red Team Defeat</p>', unsafe_allow_html=True)
 
             with st.container():
                 with st.container(border = True):
@@ -308,42 +309,42 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>Gold", unsafe_allow_html=True)
                         with st.container():
-                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleGold']}", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamRedGold']}", unsafe_allow_html=True)
                     with col2:
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>Baron", unsafe_allow_html=True)
                         with st.container():
-                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleBaronKills']}", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamRedBaronKills']}", unsafe_allow_html=True)
                     with col3:
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>Kills", unsafe_allow_html=True)
                         with st.container():
-                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleChampionKills']}", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamRedChampionKills']}", unsafe_allow_html=True)
                     with col4:
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>Dragon", unsafe_allow_html=True)
                         with st.container():
-                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleDragonKills']}", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamRedDragonKills']}", unsafe_allow_html=True)
                     with col5:
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>Inhibitor", unsafe_allow_html=True)
                         with st.container():
-                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleInhibitorKills']}", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamRedInhibitorKills']}", unsafe_allow_html=True)
                     with col6:
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>Rift Herald", unsafe_allow_html=True)
                         with st.container():
-                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleRiftheraldKills']}", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamRedRiftheraldKills']}", unsafe_allow_html=True)
                     with col7:
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>Tower", unsafe_allow_html=True)
                         with st.container():
-                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamPurpleTowerKills']}", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamRedTowerKills']}", unsafe_allow_html=True)
 
             #여기는 챔피언픽(사진), 소환사 이름, 소환사 태그, 벤픽(사진)
             with st.container():
                 with st.container():
-                    st.write('<p style="text-align: center; font-size: 2;">Purple Team Ban & Pick</p>', unsafe_allow_html=True)
+                    st.write('<p style="text-align: center; font-size: 2;">Red Team Ban & Pick</p>', unsafe_allow_html=True)
                 
         # 각 플레이어마다의 요약 정보
         for i in range(len(summoner_list)):

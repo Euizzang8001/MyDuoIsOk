@@ -49,16 +49,16 @@ class MatchInfoBase(BaseModel):
     teamBlueRiftheraldKills : int
     teamBlueTowerKills : int
     
-    teamPurpleId : int
-    teamPurpleBan: list
-    teamPurpleWin : int
-    teamPurpleGold : int
-    teamPurpleBaronKills : int
-    teamPurpleChampionKills : int
-    teamPurpleDragonKills : int
-    teamPurpleInhibitorKills : int
-    teamPurpleRiftheraldKills : int
-    teamPurpleTowerKills : int
+    teamRedId : int
+    teamRedBan: list
+    teamRedWin : int
+    teamRedGold : int
+    teamRedBaronKills : int
+    teamRedChampionKills : int
+    teamRedDragonKills : int
+    teamRedInhibitorKills : int
+    teamRedRiftheraldKills : int
+    teamRedTowerKills : int
 
 class SummonerBase(BaseModel):
     matchId: str

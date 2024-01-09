@@ -51,16 +51,16 @@ def match_info(match) -> json:
         "teamBlueRiftheraldKills": match['teamBlueRiftheraldKills'],
         "teamBlueTowerKills": match['teamBlueTowerKills'],
 
-        "teamPurpleId": match['teamPurpleId'],
-        "teamPurpleBan": list(match[i]['championId'] for i in range(5)),
-        "teamPurpleWin": match['teamPurpleWin'],
-        "teamPurpleGold": match['teamPurpleGold'],
-        "teamPurpleBaronKills": match['teamPurpleBaronKills'],
-        "teamPurpleChampionKills": match['teamPurpleChampionKills'],
-        "teamPurpleDragonKills": match['teamPurpleDragonKills'],
-        "teamPurpleInhibitorKills": match['teamPurpleInhibitorKills'],
-        "teamPurpleRiftheraldKills": match['teamPurpleRiftheraldKills'],
-        "teamPurpleTowerKills": match['teamPurpleTowerKills']
+        "teamRedId": match['teamRedId'],
+        "teamRedBan": list(match[i]['championId'] for i in range(5)),
+        "teamRedWin": match['teamRedWin'],
+        "teamRedGold": match['teamRedGold'],
+        "teamRedBaronKills": match['teamRedBaronKills'],
+        "teamRedChampionKills": match['teamRedChampionKills'],
+        "teamRedDragonKills": match['teamRedDragonKills'],
+        "teamRedInhibitorKills": match['teamRedInhibitorKills'],
+        "teamRedRiftheraldKills": match['teamRedRiftheraldKills'],
+        "teamRedTowerKills": match['teamRedTowerKills']
     }
 
 def summoner_info(summoner) -> json:
