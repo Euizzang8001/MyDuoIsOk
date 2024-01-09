@@ -40,6 +40,17 @@ def match_info(match) -> json:
         'summonerNineriotIdTagline': match['info']['participants'][8]['riotIdTagline'],
         'summonerTenriotIdTagline': match['info']['participants'][9]['riotIdTagline'],
 
+        'summonerOneChampionName': match['info']['participants'][0]['championName'],
+        'summonerTwoChampionName': match['info']['participants'][1]['championName'],
+        'summonerThreeChampionName':match['info']['participants'][2]['championName'],
+        'summonerFourChampionName':match['info']['participants'][3]['championName'],
+        'summonerFiveChampionName': match['info']['participants'][4]['championName'],
+        'summonerSixChampionName': match['info']['participants'][5]['championName'],
+        'summonerSevenChampionName': match['info']['participants'][6]['championName'],
+        'summonerEightChampionName': match['info']['participants'][7]['championName'],
+        'summonerNineChampionName': match['info']['participants'][8]['championName'],
+        'summonerTenChampionName': match['info']['participants'][9]['championName'],
+
         "teamBlueId": match['teamBlueId'],
         "teamBlueBan": list(match[i]['championId'] for i in range(5)),
         "teamBlueWin": match['teamBlueWin'],

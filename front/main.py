@@ -3,6 +3,7 @@ import requests
 import datetime
 import json
 import os
+from PIL import Image
 
 back_url = 'http://127.0.0.1:8000/myduoisok'
 get_puuid_url = back_url + '/get-summoner'
@@ -11,8 +12,11 @@ get_match_info_url = back_url + '/get-matchinfo'
 check_match_in_db_url = back_url + '/check-match-in-db'
 append_match_info_url = back_url + '/append-matchinfo'
 
-champion_json = open('champion.json', 'r', encoding='utf-8')
-champion_data = champion_json.read()
+image_url = 'https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/'
+
+champion_data = requests.get('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json').json()
+
+number_list = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']
 
 st.title('My Duo Is OK..? :frowning:')
     
@@ -209,6 +213,17 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 'summonerNineriotIdTagline': match_info['info']['participants'][8]['riotIdTagline'],
                 'summonerTenriotIdTagline': match_info['info']['participants'][9]['riotIdTagline'],
 
+                'summonerOneChampionName': match_info['info']['participants'][0]['championName'],
+                'summonerTwoChampionName': match_info['info']['participants'][1]['championName'],
+                'summonerThreeChampionName':match_info['info']['participants'][2]['championName'],
+                'summonerFourChampionName':match_info['info']['participants'][3]['championName'],
+                'summonerFiveChampionName': match_info['info']['participants'][4]['championName'],
+                'summonerSixChampionName': match_info['info']['participants'][5]['championName'],
+                'summonerSevenChampionName': match_info['info']['participants'][6]['championName'],
+                'summonerEightChampionName': match_info['info']['participants'][7]['championName'],
+                'summonerNineChampionName': match_info['info']['participants'][8]['championName'],
+                'summonerTenChampionName': match_info['info']['participants'][9]['championName'],
+
                 "teamBlueId": match_info['info']['teams'][0]['teamId'],
                 "teamBlueBan": list(match_info['info']['teams'][0]['bans'][i]['championId'] for i in range(5)),
                 "teamBlueWin": match_info['info']['teams'][0]['win'],
@@ -294,6 +309,29 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
             with st.container():
                 with st.container():
                     st.write('<p style="text-align: center; font-size: 2;">Blue Team Ban & Pick</p>', unsafe_allow_html=True)
+                for k in range(5):
+                    with st.container():
+                        col1, col2, col3 = st.columns([0.5, 2, 0.5])
+                        with col1:
+                            per_summoner_champion_per_match = per_match_info[f'summoner{number_list[k]}ChampionName']
+                            champion_image_url = image_url + per_summoner_champion_per_match + '.png'
+                            champion_image = requests.get(champion_image_url, stream=True)
+                            st.image(champion_image, caption = per_summoner_champion_per_match, use_column_width = True)
+                        with col2:
+                            per_summoner_name = per_match_info[f'summoner{number_list[k]}riotIdGameName']
+                            per_summoner_tagline = per_match_info[f'summoner{number_list[k]}riotIdTagline']
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_summoner_name}{per_summoner_tagline}</p>", unsafe_allow_html=True)
+                        with col3:
+                            per_summoer_ban_key = per_match_info['teamBlueBan'][k]
+                            for champion_key in champion_data['data']:
+                                if champion_key['key'] ==  per_summoer_ban_key:
+                                    per_summoner_ban = champion_key['name']
+                                    break
+                            ban_image_url = image_url + per_summoner_ban + '.png'
+                            ban_image = requests.get(ban_image_url, stream=True)
+                            ban_image = ban_image.convert("L")
+                            st.image(ban_image, caption=f"{number_list[i]} ban", use_column_width=True)
+                            
         #게임 요약 부분(team Red)
         with st.container(border = True):
             with st.container():
@@ -345,11 +383,12 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
             with st.container():
                 with st.container():
                     st.write('<p style="text-align: center; font-size: 2;">Red Team Ban & Pick</p>', unsafe_allow_html=True)
+                    
                 
         # 각 플레이어마다의 요약 정보
-        for i in range(len(summoner_list)):
-            with st.container(border = True):
-                st.write(f"{summoner_list[i]}")
+        # for i in range(len(summoner_list)):
+        #     with st.container(border = True):
+        #         st.write(f"{summoner_list[i]}")
     
 
     

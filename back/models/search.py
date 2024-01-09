@@ -38,6 +38,17 @@ class MatchInfoBase(BaseModel):
     summonerNineriotIdTagline : str
     summonerTenriotIdTagline : str
 
+    summonerOneChampionName: str
+    summonerTwoChampionName : str
+    summonerThreeChampionName : str
+    summonerFourChampionName : str
+    summonerFiveChampionName : str
+    summonerSixChampionName : str
+    summonerSevenChampionName : str
+    summonerEightChampionName : str
+    summonerNineChampionName : str
+    summonerTenChampionName : str
+
     teamBlueId : int
     teamBlueBan: list
     teamBlueWin : int
