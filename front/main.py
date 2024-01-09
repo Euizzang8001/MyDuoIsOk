@@ -59,9 +59,9 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
             #정보 라이엇으로부터 가져오고
             match_info = requests.get(get_match_info_url, params={'match_id': match}).json()
             same_lane_enemey = {}
-            lane_list = []
+            lane_list = [[], [], [], [], []]
             for i in range(10):
-                lane_str = match_info['info']['participants'][i]['teamPosition']
+                lane_str = match_info['info']['participants'][i]['lane']
                 if lane_str == 'TOP':
                     lane = 0
                 elif lane_str == 'JUNGLE':
@@ -72,7 +72,6 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     lane = 3
                 else:
                     lane = 4
-                lane_list.append(lane)
                 if lane not in same_lane_enemey:
                     same_lane_enemey[lane] = [match_info['info']['participants'][i]['assists'],
                                               match_info['info']['participants'][i]['champLevel'],
@@ -94,7 +93,19 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     same_lane_enemey[lane][6] -= match_info['info']['participants'][i]['totalHeal']
                     same_lane_enemey[lane][7] -= match_info['info']['participants'][i]['totalTimeCCDealt']
                     same_lane_enemey[lane][8] -= match_info['info']['participants'][i]['visionScore']
+            st.write(same_lane_enemey)
             for i in range(10):
+                lane_str = match_info['info']['participants'][i]['lane']
+                if lane_str == 'TOP':
+                    lane = 0
+                elif lane_str == 'JUNGLE':
+                    lane = 1
+                elif lane_str == 'MIDDLE':
+                    lane = 2
+                elif match_info['info']['participants'][i]['role'] == 'CARRY':
+                    lane = 3
+                else:
+                    lane = 4
                 if 'riotIdGameName' in match_info['info']['participants'][i]:
                     riotIdGameName = match_info['info']['participants'][i]['riotIdGameName']
                 else: 
@@ -128,15 +139,15 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "win": match_info['info']['participants'][i]['win'],
                         "visionScore": match_info['info']['participants'][i]['visionScore'],
 
-                        "versusassists": same_lane_enemey[lane_list[i]][0],
-                        "versuschampionLevel" :same_lane_enemey[lane_list[i]][1],
-                        "versusdeaths":same_lane_enemey[lane_list[i]][2],
-                        "versusgoldEarned":same_lane_enemey[lane_list[i]][3],
-                        "versuskills":same_lane_enemey[lane_list[i]][4],
-                        "versusTDDTC":same_lane_enemey[lane_list[i]][5],
-                        "versusTH":same_lane_enemey[lane_list[i]][6],
-                        "versusTTCCD":same_lane_enemey[lane_list[i]][7],
-                        "versusVS": same_lane_enemey[lane_list[i]][8],
+                        "versusassists": same_lane_enemey[lane_list[lane_str]][0],
+                        "versuschampionLevel" :same_lane_enemey[lane_list[lane_str]][1],
+                        "versusdeaths":same_lane_enemey[lane_list[lane_str]][2],
+                        "versusgoldEarned":same_lane_enemey[lane_list[lane_str]][3],
+                        "versuskills":same_lane_enemey[lane_list[lane_str]][4],
+                        "versusTDDTC":same_lane_enemey[lane_list[lane_str]][5],
+                        "versusTH":same_lane_enemey[lane_list[lane_str]][6],
+                        "versusTTCCD":same_lane_enemey[lane_list[lane_str]][7],
+                        "versusVS": same_lane_enemey[lane_list[lane_str]][8],
                     }
                 else:
                     per_summoner_info = {
@@ -161,15 +172,15 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "win": match_info['info']['participants'][i]['win'],
                         "visionScore": match_info['info']['participants'][i]['visionScore'],
 
-                        "versusassists": -same_lane_enemey[lane_list[i]][0],
-                        "versuschampionLevel" :-same_lane_enemey[lane_list[i]][1],
-                        "versusdeaths":-same_lane_enemey[lane_list[i]][2],
-                        "versusgoldEarned":-same_lane_enemey[lane_list[i]][3],
-                        "versuskills":-same_lane_enemey[lane_list[i]][4],
-                        "versusTDDTC":-same_lane_enemey[lane_list[i]][5],
-                        "versusTH":-same_lane_enemey[lane_list[i]][6],
-                        "versusTTCCD":-same_lane_enemey[lane_list[i]][7],
-                        "versusVS": -same_lane_enemey[lane_list[i]][8],
+                        "versusassists": same_lane_enemey[lane_list[lane_str]][0],
+                        "versuschampionLevel" :same_lane_enemey[lane_list[lane_str]][1],
+                        "versusdeaths":same_lane_enemey[lane_list[lane_str]][2],
+                        "versusgoldEarned":same_lane_enemey[lane_list[lane_str]][3],
+                        "versuskills":same_lane_enemey[lane_list[lane_str]][4],
+                        "versusTDDTC":same_lane_enemey[lane_list[lane_str]][5],
+                        "versusTH":same_lane_enemey[lane_list[lane_str]][6],
+                        "versusTTCCD":same_lane_enemey[lane_list[lane_str]][7],
+                        "versusVS": same_lane_enemey[lane_list[lane_str]][8],
                     }
                 if per_summoner_info['teamId'] not in goldSum:
                     goldSum[per_summoner_info['teamId']] = 0
@@ -414,9 +425,55 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
         # 각 플레이어마다의 요약 정보
         for i in range(len(summoner_list)):
             with st.container(border = True):
-                st.write(f"{summoner_list[i]}")
-    
-
-    
-
-# (same_lane_enemey[lane_list[i]][0] * 100 + same_lane_enemey[lane_list[i]][1] * 100 + same_lane_enemey[lane_list[i]][2] * -100 + same_lane_enemey[lane_list[i]][3] + same_lane_enemey[lane_list[i]][4] * 150 + same_lane_enemey[lane_list[i]][5] / 4 + same_lane_enemey[lane_list[i]][6] / 100 + same_lane_enemey[lane_list[i]][7] * 5 + same_lane_enemey[lane_list[i]][8] * 15)
+                st.write(f"{summoner_list[i]} VS Score") 
+                summoner_info_per_match_url = back_url + f"/get-summonerinfo-from-db/{summoner_puuid_list[i]}/{match}"
+                st.write()
+                summoner_info_per_match = requests.get(summoner_info_per_match_url).json()
+                st.write(summoner_info_per_match)
+                col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 = st.columns([0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.4])
+                info1 = summoner_info_per_match['versuschampionLevel']
+                info2 = summoner_info_per_match['versuskills']
+                info3 = summoner_info_per_match['versusdeaths']
+                info4 = summoner_info_per_match['versusassists']
+                info5 = summoner_info_per_match['versusgoldEarned']
+                info6 = summoner_info_per_match['versusTDDTC']
+                info7 = summoner_info_per_match['versusTH']
+                info8 = summoner_info_per_match['versusTTCCD']
+                info9 = summoner_info_per_match['versusVS']
+                with col1:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>Level</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info1}</p>", unsafe_allow_html=True)
+                with col2:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>Kill</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info2}</p>", unsafe_allow_html=True)
+                with col3:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>Death</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info3}</p>", unsafe_allow_html=True)
+                with col4:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>Assist</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info4}</p>", unsafe_allow_html=True)
+                with col5:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>Gold</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info5}</p>", unsafe_allow_html=True)
+                with col6:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>Damage</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info6}</p>", unsafe_allow_html=True)
+                with col7:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>Heal</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info7}</p>", unsafe_allow_html=True)
+                with col8:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>CC</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info8}</p>", unsafe_allow_html=True)
+                with col9:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>Vision</p>", unsafe_allow_html=True)
+                    st.write(f"<p style='text-align: center; font-size: 2;'>{info9}</p>", unsafe_allow_html=True)
+                with col10:
+                    st.write(f"<p style='text-align: center; font-size: 2;'><strong>VS Score</p>", unsafe_allow_html=True)
+                    info10 = round((info1 * 100 + info2 * 100 + info3 * -100 + info4 + info5 * 150 + info6 / 4 + info7 / 100 + info8 * 5 + info9 * 15)/100, 2)
+                    if info10<0:
+                        st.write(f"<p style='text-align: center; font-size: 2;color: red;'><strong>{info10}</p>", unsafe_allow_html=True)
+                    else:
+                        st.write(f"<p style='text-align: center; font-size: 2;color: green;'><strong>{info10}</p>", unsafe_allow_html=True)
+                
+                
+                
