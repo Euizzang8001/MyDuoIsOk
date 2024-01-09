@@ -75,7 +75,7 @@ class SummonerBase(BaseModel):
     matchId: str
     assists: int
     champLevel: int
-    championId: str
+    championId: int
     championName: str
     deaths: int
     goldEarned: int

@@ -37,7 +37,7 @@ match_id_list = []
 if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db에 저장하고 불러오기
     summoner_nospace = ''.join(i for i in summoner if not i.isspace())
     summoner_list = list(summoner_nospace.split(','))
-    st.write(summoner_list)
+    st.write(f':man_and_woman_holding_hands:{summoner}:woman_and_man_holding_hands: Your Matches Are Here!')
     for summoner_name in summoner_list:
         summoner_puuid = requests.get(get_puuid_url, params={'summoner': summoner_name}).json()
         summoner_puuid_list.append(summoner_puuid)
@@ -161,15 +161,15 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         "win": match_info['info']['participants'][i]['win'],
                         "visionScore": match_info['info']['participants'][i]['visionScore'],
 
-                        "versusassists": same_lane_enemey[lane_list[i]][0],
-                        "versuschampionLevel" :same_lane_enemey[lane_list[i]][1],
-                        "versusdeaths":same_lane_enemey[lane_list[i]][2],
-                        "versusgoldEarned":same_lane_enemey[lane_list[i]][3],
-                        "versuskills":same_lane_enemey[lane_list[i]][4],
-                        "versusTDDTC":same_lane_enemey[lane_list[i]][5],
-                        "versusTH":same_lane_enemey[lane_list[i]][6],
-                        "versusTTCCD":same_lane_enemey[lane_list[i]][7],
-                        "versusVS": same_lane_enemey[lane_list[i]][8],
+                        "versusassists": -same_lane_enemey[lane_list[i]][0],
+                        "versuschampionLevel" :-same_lane_enemey[lane_list[i]][1],
+                        "versusdeaths":-same_lane_enemey[lane_list[i]][2],
+                        "versusgoldEarned":-same_lane_enemey[lane_list[i]][3],
+                        "versuskills":-same_lane_enemey[lane_list[i]][4],
+                        "versusTDDTC":-same_lane_enemey[lane_list[i]][5],
+                        "versusTH":-same_lane_enemey[lane_list[i]][6],
+                        "versusTTCCD":-same_lane_enemey[lane_list[i]][7],
+                        "versusVS": -same_lane_enemey[lane_list[i]][8],
                     }
                 if per_summoner_info['teamId'] not in goldSum:
                     goldSum[per_summoner_info['teamId']] = 0
@@ -258,17 +258,19 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
         #champion.json와 다른 정보에 따라 코드 작성
     # matchId 마다의 container
     with st.container(border = True):
-        st.write(f"Game Time: {per_match_info['gameDuration']//60}:{per_match_info['gameDuration']%60}")
+        duration_seconds = per_match_info['gameDuration']%60
+        st.write(f"Game Time  {per_match_info['gameDuration']//60}:{duration_seconds:02}")
         #게임 요약 부분(team Blue)
         with st.container(border = True):
             with st.container():
                 if per_match_info['teamBlueWin'] == 0:
-                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Defeat</p>', unsafe_allow_html=True)
+                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Defeat / Red Team Win</p>', unsafe_allow_html=True)
                 else:
-                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Win</p>', unsafe_allow_html=True)
-
+                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Win / Red Team Defeat</p>', unsafe_allow_html=True)
+            #blue team 요약
             with st.container():
                with st.container(border = True):
+                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Infomation</p>', unsafe_allow_html=True)
                     col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
                     with col1:
                         with st.container():
@@ -305,45 +307,10 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             st.write(f"<p style='text-align: center; font-size: 2;'>Tower", unsafe_allow_html=True)
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamBlueTowerKills']}", unsafe_allow_html=True)
-            
-            #여기는 챔피언픽(사진), 소환사 이름, 소환사 태그, 벤픽(사진)
-            with st.container():
-                with st.container():
-                    st.write('<p style="text-align: center; font-size: 2;">Blue Team Ban & Pick</p>', unsafe_allow_html=True)
-                for k in range(5):
-                    with st.container():
-                        col1, col2, col3 = st.columns([0.2, 2, 0.2])
-                        with col1:
-                            per_summoner_champion_per_match = per_match_info[f'summoner{number_list[k]}ChampionName']
-                            champion_image_url = image_url + per_summoner_champion_per_match + '.png'
-                            champion_image = requests.get(champion_image_url, stream=True)
-                            st.image(champion_image.content, use_column_width = True)
-                        with col2:
-                            per_summoner_name = per_match_info[f'summoner{number_list[k]}riotIdGameName']
-                            per_summoner_tagline = per_match_info[f'summoner{number_list[k]}riotIdTagline']
-                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_summoner_name}{per_summoner_tagline}</p>", unsafe_allow_html=True)
-                        with col3:
-                            per_summoner_ban_key = per_match_info['teamBlueBan'][k]
-                            st.write(per_summoner_ban_key)
-                            per_summoner_ban = str(0)
-                            for champion_key in champion_data['data']:
-                                st.write(champion_data['data'][champion_key]['key'])
-                                if champion_data['data'][champion_key]['key'] ==  per_summoner_ban_key:
-                                    per_summoner_ban = champion_data['data'][champion_key]['name']
-                                    st.write(per_summoner_ban)
-                                    break
-                            ban_image_url = image_url + per_summoner_ban + '.png'
-                            
-        #게임 요약 부분(team Red)
-        with st.container(border = True):
-            with st.container():
-                if per_match_info['teamBlueWin'] == 0:
-                    st.write('<p style="text-align: center; font-size: 2;">Red Team win</p>', unsafe_allow_html=True)
-                else:
-                    st.write('<p style="text-align: center; font-size: 2;">Red Team Defeat</p>', unsafe_allow_html=True)
-
+            #red team 요약
             with st.container():
                 with st.container(border = True):
+                    st.write('<p style="text-align: center; font-size: 2;">Red Team Infomation</p>', unsafe_allow_html=True)
                     col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
                     with col1:
                         with st.container():
@@ -380,19 +347,76 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             st.write(f"<p style='text-align: center; font-size: 2;'>Tower", unsafe_allow_html=True)
                         with st.container():
                             st.write(f"<p style='text-align: center; font-size: 2;'>{per_match_info['teamRedTowerKills']}", unsafe_allow_html=True)
-
             #여기는 챔피언픽(사진), 소환사 이름, 소환사 태그, 벤픽(사진)
             with st.container():
                 with st.container():
-                    st.write('<p style="text-align: center; font-size: 2;">Red Team Ban & Pick</p>', unsafe_allow_html=True)
+                    col1, col2, col3 = st.columns([3, 3, 3])
+                    with col1:
+                        st.write('<p style="text-align: center; font-size: 2;">BLUE</p>', unsafe_allow_html=True)
+                    with col2:
+                        st.write('<p style="text-align: center; font-size: 2;">Ban & Pick</p>', unsafe_allow_html=True)
+                    with col3:
+                        st.write('<p style="text-align: center; font-size: 2;">RED</p>', unsafe_allow_html=True)
+                for k in range(5):
+                    with st.container():
+                        col1, col2, col3, col4, col5, col6 = st.columns([0.4, 2, 0.4, 0.4, 2, 0.4])
+                        #픽 이미지
+                        with col1:
+                            per_summoner_champion_per_match = per_match_info[f'summoner{number_list[k]}ChampionName']
+                            champion_image_url = image_url + per_summoner_champion_per_match + '.png'
+                            champion_image = requests.get(champion_image_url, stream=True)
+                            st.image(champion_image.content, use_column_width = True)
+                        #소환사 이름
+                        with col2:
+                            per_summoner_name = per_match_info[f'summoner{number_list[k]}riotIdGameName']
+                            per_summoner_tagline = per_match_info[f'summoner{number_list[k]}riotIdTagline']
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_summoner_name}#{per_summoner_tagline}</p>", unsafe_allow_html=True)
+                        # 밴 이미지
+                        with col3:
+                            per_summoner_ban_key = per_match_info['teamBlueBan'][k]
+                            per_summoner_ban = str(0)
+                            for champion_key in champion_data['data']:
+                                if champion_data['data'][champion_key]['key'] ==  str(per_summoner_ban_key):
+                                    per_summoner_ban = champion_data['data'][champion_key]['name']
+                                    break
+                            ban_image_url = image_url + per_summoner_ban + '.png'
+                            ban_image = requests.get(ban_image_url, stream=True).content
+                            pil_image = Image.open(io.BytesIO(ban_image))
+                            grayscale_image = pil_image.convert("L")
+                            st.image(grayscale_image, use_column_width = True)
+
+                        with col4:
+                            per_summoner_ban_key = per_match_info['teamRedBan'][k]
+                            per_summoner_ban = str(0)
+                            for champion_key in champion_data['data']:
+                                if champion_data['data'][champion_key]['key'] ==  str(per_summoner_ban_key):
+                                    per_summoner_ban = champion_data['data'][champion_key]['name']
+                                    break
+                            ban_image_url = image_url + per_summoner_ban + '.png'
+                            ban_image = requests.get(ban_image_url, stream=True).content
+                            pil_image = Image.open(io.BytesIO(ban_image))
+                            grayscale_image = pil_image.convert("L")
+                            st.image(grayscale_image, use_column_width = True)
+
+                        with col5:
+                            per_summoner_name = per_match_info[f'summoner{number_list[k+5]}riotIdGameName']
+                            per_summoner_tagline = per_match_info[f'summoner{number_list[k+5]}riotIdTagline']
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{per_summoner_name}#{per_summoner_tagline}</p>", unsafe_allow_html=True)
+                            
+                        with col6:
+                            per_summoner_champion_per_match = per_match_info[f'summoner{number_list[k+5]}ChampionName']
+                            champion_image_url = image_url + per_summoner_champion_per_match + '.png'
+                            champion_image = requests.get(champion_image_url, stream=True)
+                            st.image(champion_image.content, use_column_width = True)
+
                     
                 
         # 각 플레이어마다의 요약 정보
-        # for i in range(len(summoner_list)):
-        #     with st.container(border = True):
-        #         st.write(f"{summoner_list[i]}")
+        for i in range(len(summoner_list)):
+            with st.container(border = True):
+                st.write(f"{summoner_list[i]}")
     
 
     
 
-        
+# (same_lane_enemey[lane_list[i]][0] * 100 + same_lane_enemey[lane_list[i]][1] * 100 + same_lane_enemey[lane_list[i]][2] * -100 + same_lane_enemey[lane_list[i]][3] + same_lane_enemey[lane_list[i]][4] * 150 + same_lane_enemey[lane_list[i]][5] / 4 + same_lane_enemey[lane_list[i]][6] / 100 + same_lane_enemey[lane_list[i]][7] * 5 + same_lane_enemey[lane_list[i]][8] * 15)
