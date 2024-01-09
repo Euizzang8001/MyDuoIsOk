@@ -21,7 +21,9 @@ class SummonerRepository():
 
     def get_summoner_puuid(self, summoner_name: str) -> str: #player_name -> player의 계정 정보 return
         summoner = summoner_name
-        summoner = summoner.replace('','%20')
+        #del계정
+        if summoner[8:] != 'del':
+            summoner = summoner.replace('','%20')
         request_url = f'https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner}'
         result = requests.get(request_url, headers=headers)
         result.raise_for_status()

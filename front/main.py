@@ -75,10 +75,10 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         lane = 1
                     elif lane_str == 'MIDDLE':
                         lane = 2
-                    elif match_info['info']['participants'][i]['role'] == 'SUPPORT':
-                        lane = 4
-                    else:
+                    elif lane_str == 'BOTTOM':
                         lane = 3
+                    else:
+                        lane = 4
                     if lane not in same_lane_enemy:
                         same_lane_enemy[lane] = []
                         same_lane_enemy[lane].extend([match_info['info']['participants'][i]['assists'],
@@ -109,16 +109,16 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         lane = 1
                     elif lane_str == 'MIDDLE':
                         lane = 2
-                    elif match_info['info']['participants'][i]['role'] == 'SUPPORT':
-                        lane = 4
-                    else:
+                    elif lane_str == 'BOTTOM':
                         lane = 3
-                    if 'riotIdGameName' in match_info['info']['participants'][i]:
+                    else:
+                        lane = 4
+                    if 'riotIdGameName' in match_info['info']['participants'][i] or match_info['info']['participants'][i]['riotIdGameName'] == "":
                         riotIdGameName = match_info['info']['participants'][i]['riotIdGameName']
                     else: 
                         riotIdGameName = match_info['info']['participants'][i]['summonerName']
                     riotIdGameName_list.append(riotIdGameName)
-                    if 'riotIdTagline' in match_info['info']['participants'][i]:
+                    if 'riotIdTagline' in match_info['info']['participants'][i] or match_info['info']['participants'][i]['riotIdTagline'] == "":
                         riotIdTagline = match_info['info']['participants'][i]['riotIdTagline']
                     else: 
                         riotIdTagline = 'KR1'
@@ -287,7 +287,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             st.write('<p style="text-align: center; font-size: 2;">Blue Team Win / Red Team Defeat</p>', unsafe_allow_html=True)
                     #blue team 요약
                     with st.container(border = True):
-                            st.write('<p style="text-align: center; font-size: 2;color:blue;">Blue Team Infomation</p>', unsafe_allow_html=True)
+                            st.write('<p style="text-align: center; font-size: 2;color:blue;">Blue Team Data</p>', unsafe_allow_html=True)
                             col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
                             with col1:
                                 with st.container():
@@ -327,7 +327,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     #red team 요약
                     with st.container():
                         with st.container(border = True):
-                            st.write('<p style="text-align: center; font-size: 2;color:red;">Red Team Infomation</p>', unsafe_allow_html=True)
+                            st.write('<p style="text-align: center; font-size: 2;color:red;">Red Team Data</p>', unsafe_allow_html=True)
                             col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
                             with col1:
                                 with st.container():
