@@ -88,6 +88,7 @@ class SummonerBase(BaseModel):
     role: str
     teamId: int
     totalDamageDealtToChampions: int
+    totalDamageTaken: int
     totalHeal: int
     totalTimeCCDealt: int
     win: bool

@@ -4,17 +4,15 @@ import requests
 from pymongo import MongoClient
 from config.databases import db
 from models.search import MatchInfoBase, SummonerBase
+from dotenv import load_dotenv
+import os
 
-apikey="RGAPI-798318f3-ec3e-4ea8-9bba-40c3ceb85220"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
+apikey = os.environ["api_key"]
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-    "Origin": "https://developer.riotgames.com",    
-    "X-Riot-Token": apikey
-}
-
+headers = os.environ['headers']
+headers["X-Riot-Token"]: apikey
 class SummonerRepository():
     def __init__(self) -> None:
         self.db = db

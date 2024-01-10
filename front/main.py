@@ -5,8 +5,12 @@ import json
 import os
 from PIL import Image
 import io
+from dotenv import load_dotenv
 
-back_url = 'http://127.0.0.1:8000/myduoisok'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
+back_url = os.environ["back_url"]
+
 get_puuid_url = back_url + '/get-summoner'
 get_match_list_url = back_url + '/get-matchid'
 get_match_info_url = back_url + '/get-matchinfo'
@@ -87,6 +91,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                                                 match_info['info']['participants'][i]['goldEarned'],
                                                 match_info['info']['participants'][i]['kills'],
                                                 match_info['info']['participants'][i]['totalDamageDealtToChampions'],
+                                                match_info['info']['participants'][i]['totalDamageTaken'],
                                                 match_info['info']['participants'][i]['totalHeal'],
                                                 match_info['info']['participants'][i]['totalTimeCCDealt'],
                                                 match_info['info']['participants'][i]['visionScore']
@@ -98,9 +103,11 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         same_lane_enemy[lane][3] -= match_info['info']['participants'][i]['goldEarned']
                         same_lane_enemy[lane][4] -= match_info['info']['participants'][i]['kills']
                         same_lane_enemy[lane][5] -= match_info['info']['participants'][i]['totalDamageDealtToChampions']
-                        same_lane_enemy[lane][6] -= match_info['info']['participants'][i]['totalHeal']
-                        same_lane_enemy[lane][7] -= match_info['info']['participants'][i]['totalTimeCCDealt']
-                        same_lane_enemy[lane][8] -= match_info['info']['participants'][i]['visionScore']
+                        same_lane_enemy[lane][6] -= match_info['info']['participants'][i]['totalDamageTaken'],
+                        same_lane_enemy[lane][7] -= match_info['info']['participants'][i]['totalHeal']
+                        same_lane_enemy[lane][8] -= match_info['info']['participants'][i]['totalTimeCCDealt']
+                        same_lane_enemy[lane][9] -= match_info['info']['participants'][i]['visionScore']
+
                 for i in range(10):
                     lane_str = match_info['info']['participants'][i]['teamPosition']
                     if lane_str == 'TOP':
@@ -141,6 +148,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             "role": match_info['info']['participants'][i]['role'],
                             "teamId": match_info['info']['participants'][i]['teamId'],
                             "totalDamageDealtToChampions":match_info['info']['participants'][i]['totalDamageDealtToChampions'],
+                            "totalDamageTaken": match_info['info']['participants'][i]['totalDamageTaken'],
                             "totalHeal": match_info['info']['participants'][i]['totalHeal'],
                             "totalTimeCCDealt": match_info['info']['participants'][i]['totalTimeCCDealt'],
                             "win": match_info['info']['participants'][i]['win'],
@@ -152,9 +160,10 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             "versusgoldEarned":same_lane_enemy[lane][3],
                             "versuskills":same_lane_enemy[lane][4],
                             "versusTDDTC":same_lane_enemy[lane][5],
-                            "versusTH":same_lane_enemy[lane][6],
-                            "versusTTCCD":same_lane_enemy[lane][7],
-                            "versusVS": same_lane_enemy[lane][8],
+                            "versusTDT" : same_lane_enemy[lane][6],
+                            "versusTH":same_lane_enemy[lane][7],
+                            "versusTTCCD":same_lane_enemy[lane][8],
+                            "versusVS": same_lane_enemy[lane][9],
                         }
                     else:
                         per_summoner_info = {
@@ -174,6 +183,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             "role": match_info['info']['participants'][i]['role'],
                             "teamId": match_info['info']['participants'][i]['teamId'],
                             "totalDamageDealtToChampions":match_info['info']['participants'][i]['totalDamageDealtToChampions'],
+                            "totalDamageTaken": match_info['info']['participants'][i]['totalDamageTaken'],
                             "totalHeal": match_info['info']['participants'][i]['totalHeal'],
                             "totalTimeCCDealt": match_info['info']['participants'][i]['totalTimeCCDealt'],
                             "win": match_info['info']['participants'][i]['win'],
@@ -185,9 +195,10 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             "versusgoldEarned":-same_lane_enemy[lane][3],
                             "versuskills":-same_lane_enemy[lane][4],
                             "versusTDDTC":-same_lane_enemy[lane][5],
-                            "versusTH":-same_lane_enemy[lane][6],
-                            "versusTTCCD":-same_lane_enemy[lane][7],
-                            "versusVS": -same_lane_enemy[lane][8],
+                            "versusTDT" : -same_lane_enemy[lane][6],
+                            "versusTH":-same_lane_enemy[lane][7],
+                            "versusTTCCD":-same_lane_enemy[lane][8],
+                            "versusVS": -same_lane_enemy[lane][9],
                         }
                     if per_summoner_info['teamId'] not in goldSum:
                         goldSum[per_summoner_info['teamId']] = 0
@@ -438,21 +449,22 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         
                 # 각 플레이어마다의 요약 정보
                 for i in range(len(summoner_list)):
-                    info10 = 0
+                    info = 0
                     with st.container(border = True):
                         st.write(f"{summoner_list[i]} VS Score") 
                         summoner_info_per_match_url = back_url + f"/get-summonerinfo-from-db/{summoner_puuid_list[i]}/{match}"
                         summoner_info_per_match = requests.get(summoner_info_per_match_url).json()
-                        col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 = st.columns([0.2, 0.15, 0.25, 0.2, 0.25, 0.25, 0.25, 0.2, 0.25, 0.35])
+                        col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11 = st.columns([0.2, 0.15, 0.25, 0.2, 0.25, 0.25, 0.25, 0.2, 0.25, 0.25, 0.35])
                         info1 = summoner_info_per_match['versuschampionLevel']
                         info2 = summoner_info_per_match['versuskills']  
                         info3 = summoner_info_per_match['versusdeaths']
                         info4 = summoner_info_per_match['versusassists']
                         info5 = summoner_info_per_match['versusgoldEarned']
                         info6 = summoner_info_per_match['versusTDDTC']
-                        info7 = summoner_info_per_match['versusTH']
-                        info8 = summoner_info_per_match['versusTTCCD']
-                        info9 = summoner_info_per_match['versusVS']
+                        info7 = summoner_info_per_match['versusTDT']
+                        info8 = summoner_info_per_match['versusTH']
+                        info9 = summoner_info_per_match['versusTTCCD']
+                        info10 = summoner_info_per_match['versusVS']
                         with col1:
                             st.write(f"<p style='text-align: center; font-size: 2;'><strong>Level</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info1}</p>", unsafe_allow_html=True)
@@ -472,39 +484,42 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             st.write(f"<p style='text-align: center; font-size: 2;'><strong>Dealt</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info6}</p>", unsafe_allow_html=True)
                         with col7:
-                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Heal</p>", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Taken</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info7}</p>", unsafe_allow_html=True)
                         with col8:
-                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>CC</p>", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Heal</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info8}</p>", unsafe_allow_html=True)
                         with col9:
-                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Vision</p>", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>CC</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info9}</p>", unsafe_allow_html=True)
                         with col10:
+                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Vision</p>", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'>{info10}</p>", unsafe_allow_html=True)
+                        with col11:
                             st.write(f"<p style='text-align: center; font-size: 2;'><strong>VS Score</p>", unsafe_allow_html=True)
-                            info10 = round((info1 * 100 + info2 * 100 + info3 * -100 + info4 + info5 * 150 + info6 / 4 + info7 / 100 + info8 * 5 + info9 * 15)/500, 2)
-                            if info10<0:
+                            info = round((info1 * 100 + info2 * 100 + info3 * -100 + info4 + info5 * 150 + info6 / 4 + info7 / 100 + info8 * 5 + info9 * 15)/500, 2)
+                            if info<0:
                                 st.write(f"<p style='text-align: center; font-size: 2;color: red;'><strong>{info10}</p>", unsafe_allow_html=True)
                             else:
                                 st.write(f"<p style='text-align: center; font-size: 2;color: green;'><strong>{info10}</p>", unsafe_allow_html=True)
                     
                     with st.container():
-                        if info10<-300:
+                        if info<-300:
                             if summoner_info_per_match['win']:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Maybe BUS....</p>", unsafe_allow_html=True)
                             else:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Brought DEFEAT..</p>", unsafe_allow_html=True)
-                        elif info10<-100:
+                        elif info<-100:
                             if summoner_info_per_match['win']:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Served One Person's Portion</p>", unsafe_allow_html=True)
                             else:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>It's Not Your Direct Fault, But...</p>", unsafe_allow_html=True)
-                        elif info10>300:
+                        elif info>300:
                             if summoner_info_per_match['win']:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>Your CARRY and Line Gap</p>", unsafe_allow_html=True)
                             else:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Had Bad Luck With The Team</p>", unsafe_allow_html=True)
-                        elif info10>100:
+                        elif info>100:
                             if summoner_info_per_match['win']:
                                     st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Were A Good Player</p>", unsafe_allow_html=True)
                             else:

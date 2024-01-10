@@ -93,6 +93,7 @@ def summoner_info(summoner) -> json:
         "role": summoner['role'],
         "teamId": summoner['teamId'],
         "totalDamageDealtToChampions": summoner['totalDamageDealtToChampions'],
+        "totalDamageTaken": summoner['totalDamageTaken'],
         "totalHeal": summoner['totalHeal'],
         "totalTimeCCDealt": summoner['totalTimeCCDealt'],
         "win": summoner['win'],
