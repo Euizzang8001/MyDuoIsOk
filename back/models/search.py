@@ -99,6 +99,7 @@ class SummonerBase(BaseModel):
     versusgoldEarned:int
     versuskills:int
     versusTDDTC:int
+    versusTDT: int
     versusTH:int
     versusTTCCD:int
     versusVS: int

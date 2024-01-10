@@ -9,10 +9,17 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
-apikey = os.environ["api_key"]
+apikey = os.environ["API_KEY"]
 
-headers = os.environ['headers']
-headers["X-Riot-Token"]: apikey
+
+headers = {
+    "User-Agent": os.environ["USER_AGENT"],
+    "Accept-Language": os.environ["ACCEPT_LANGUAGE"],
+    "Accept-Charset": os.environ["ACCEPT_CHARSET"],
+    "Origin": os.environ["ORIGIN"], 
+    "X-Riot-Token": apikey
+}
+
 class SummonerRepository():
     def __init__(self) -> None:
         self.db = db

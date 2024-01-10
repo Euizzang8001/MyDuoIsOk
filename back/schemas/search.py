@@ -104,6 +104,7 @@ def summoner_info(summoner) -> json:
         "versusgoldEarned":summoner['versusgoldEarned'],
         "versuskills":summoner['versuskills'],
         "versusTDDTC":summoner['versusTDDTC'],
+        "versusTDT": summoner['versusTDT'],
         "versusTH":summoner['versusTH'],
         "versusTTCCD":summoner['versusTTCCD'],
         "versusVS": summoner['versusVS'],

@@ -26,13 +26,13 @@ number_list = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', '
 
 st.title('My Duo Is OK..? :frowning:')
     
-explain1 = 'There are so many players playing with one or more friends.'
-explain2 = 'We want to give you some detail information about your party!'
+explain1 = 'There are so many summoners playing with one or more friends.'
+explain2 = 'I want to give you some funny information about your party!'
 explain3 = 'So you can feel more excited with this info!'
 st.write(explain1)
 st.write(explain2)
 st.write(explain3)
-summoner = st.text_input('Write The Summoner Name')
+summoner = st.text_input('Write The Summoner Name(Without Tag and Seperate Summoner Names with Commas)')
 search_summoner = st.button('Search')
 
 summoner_puuid_list = []
@@ -103,7 +103,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         same_lane_enemy[lane][3] -= match_info['info']['participants'][i]['goldEarned']
                         same_lane_enemy[lane][4] -= match_info['info']['participants'][i]['kills']
                         same_lane_enemy[lane][5] -= match_info['info']['participants'][i]['totalDamageDealtToChampions']
-                        same_lane_enemy[lane][6] -= match_info['info']['participants'][i]['totalDamageTaken'],
+                        same_lane_enemy[lane][6] -= match_info['info']['participants'][i]['totalDamageTaken']
                         same_lane_enemy[lane][7] -= match_info['info']['participants'][i]['totalHeal']
                         same_lane_enemy[lane][8] -= match_info['info']['participants'][i]['totalTimeCCDealt']
                         same_lane_enemy[lane][9] -= match_info['info']['participants'][i]['visionScore']
@@ -293,12 +293,12 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 with st.container(border = True):
                     with st.container():
                         if per_match_info['teamBlueWin'] == 0:
-                            st.write('<p style="text-align: center; font-size: 2;">Blue Team Defeat / Red Team Win</p>', unsafe_allow_html=True)
+                            st.write('<p style="text-align: center; font-size: 2;"><strong>Blue Team Defeat / Red Team Win</strong></p>', unsafe_allow_html=True)
                         else:
-                            st.write('<p style="text-align: center; font-size: 2;">Blue Team Win / Red Team Defeat</p>', unsafe_allow_html=True)
+                            st.write('<p style="text-align: center; font-size: 2;"><strong>Blue Team Win / Red Team Defeat</strong></p>', unsafe_allow_html=True)
                     #blue team 요약
                     with st.container(border = True):
-                            st.write('<p style="text-align: center; font-size: 2;color:blue;">Blue Team Data</p>', unsafe_allow_html=True)
+                            st.write('<p style="text-align: center; font-size: 2;color:blue;"><strong>Blue Team Data</strong></p>', unsafe_allow_html=True)
                             col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
                             with col1:
                                 with st.container():
@@ -338,7 +338,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                     #red team 요약
                     with st.container():
                         with st.container(border = True):
-                            st.write('<p style="text-align: center; font-size: 2;color:red;">Red Team Data</p>', unsafe_allow_html=True)
+                            st.write('<p style="text-align: center; font-size: 2;color:red;"><strong>Red Team Data</strong></p>', unsafe_allow_html=True)
                             col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
                             with col1:
                                 with st.container():
@@ -380,11 +380,11 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         with st.container():
                             col1, col2, col3 = st.columns([9, 3, 9])
                             with col1:
-                                st.write('<p style="text-align: center; font-size: 2;color : blue;">BLUE</p>', unsafe_allow_html=True)
+                                st.write('<p style="text-align: center; font-size: 2;color : blue;"><strong>BLUE</strong></p>', unsafe_allow_html=True)
                             with col2:
-                                st.write('<p style="text-align: center; font-size: 2;">Ban & Pick</p>', unsafe_allow_html=True)
+                                st.write('<p style="text-align: center; font-size: 2;"><strong>Ban & Pick</strong></p>', unsafe_allow_html=True)
                             with col3:
-                                st.write('<p style="text-align: center; font-size: 2;color: red;">RED</p>', unsafe_allow_html=True)
+                                st.write('<p style="text-align: center; font-size: 2;color: red;"><strong>RED</strong></p>', unsafe_allow_html=True)
                         for k in range(5):
                             with st.container():
                                 col1, col2, col3, col4, col5, col6 = st.columns([0.4, 2, 0.4, 0.4, 2, 0.4])
@@ -451,10 +451,10 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                 for i in range(len(summoner_list)):
                     info = 0
                     with st.container(border = True):
-                        st.write(f"{summoner_list[i]} VS Score") 
+                        st.write(f"<p style='text-align: center; font-size: 2;'><strong>{summoner_list[i]}'s VS Score</strong></p>", unsafe_allow_html=True) 
                         summoner_info_per_match_url = back_url + f"/get-summonerinfo-from-db/{summoner_puuid_list[i]}/{match}"
                         summoner_info_per_match = requests.get(summoner_info_per_match_url).json()
-                        col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11 = st.columns([0.2, 0.15, 0.25, 0.2, 0.25, 0.25, 0.25, 0.2, 0.25, 0.25, 0.35])
+                        col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 = st.columns([0.25, 0.25, 0.25, 0.25, 0.25, 0.3, 0.3, 0.3, 0.25, 0.3])
                         info1 = summoner_info_per_match['versuschampionLevel']
                         info2 = summoner_info_per_match['versuskills']  
                         info3 = summoner_info_per_match['versusdeaths']
@@ -495,31 +495,31 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                         with col10:
                             st.write(f"<p style='text-align: center; font-size: 2;'><strong>Vision</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info10}</p>", unsafe_allow_html=True)
-                        with col11:
-                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>VS Score</p>", unsafe_allow_html=True)
-                            info = round((info1 * 100 + info2 * 100 + info3 * -100 + info4 + info5 * 150 + info6 / 4 + info7 / 100 + info8 * 5 + info9 * 15)/500, 2)
-                            if info<0:
-                                st.write(f"<p style='text-align: center; font-size: 2;color: red;'><strong>{info10}</p>", unsafe_allow_html=True)
-                            else:
-                                st.write(f"<p style='text-align: center; font-size: 2;color: green;'><strong>{info10}</p>", unsafe_allow_html=True)
+                        info = round((info1 * 100 + info2 * 100 + info3 * -100 + info4 + info5 * 150 + info6 / 4 + info7/4 + info8 / 100 + info9 * 5 + info10 * 15)/500, 1)
+                            
                     
                     with st.container():
-                        if info<-300:
+                        if info<0:
+                            st.write(f"<div style='text-align: center; font-size: 20px; color: black;'><strong>VS SCORE : </strong><span style='color: red;'>{info}</span></div>", unsafe_allow_html=True)
+                        else:
+                            st.write(f"<div style='text-align: center; font-size: 20px; color: black;'><strong>VS SCORE : </strong><span style='color: green;'>{info}</span></div>", unsafe_allow_html=True)
+                        
+                        if info<-400:
                             if summoner_info_per_match['win']:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Maybe BUS....</p>", unsafe_allow_html=True)
                             else:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Brought DEFEAT..</p>", unsafe_allow_html=True)
-                        elif info<-100:
+                        elif info<-150:
                             if summoner_info_per_match['win']:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Served One Person's Portion</p>", unsafe_allow_html=True)
                             else:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>It's Not Your Direct Fault, But...</p>", unsafe_allow_html=True)
-                        elif info>300:
+                        elif info>400:
                             if summoner_info_per_match['win']:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>Your CARRY and Line Gap</p>", unsafe_allow_html=True)
                             else:
                                 st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Had Bad Luck With The Team</p>", unsafe_allow_html=True)
-                        elif info>100:
+                        elif info>150:
                             if summoner_info_per_match['win']:
                                     st.write(f"<p style='text-align: center; font-size: 2;'><strong>You Were A Good Player</p>", unsafe_allow_html=True)
                             else:
