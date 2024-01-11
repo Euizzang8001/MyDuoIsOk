@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from models.search import MatchInfoBase, SummonerBase
-from services.search import SummonerService
+from app.models.search import MatchInfoBase, SummonerBase
+from app.services.search import SummonerService
 
 
 router = APIRouter(

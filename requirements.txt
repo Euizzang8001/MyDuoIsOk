@@ -2,6 +2,6 @@ fastapi
 uvicorn
 streamlit
 pymongo
-dotenv
+python-dotenv
 pydantic
 requests
