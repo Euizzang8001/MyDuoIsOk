@@ -1,6 +1,5 @@
 from fastapi import Depends
 
-from schemas.search import summoner_info, match_info
 from repository.search import SummonerRepository
 from models.search import MatchInfoBase, SummonerBase
 import json

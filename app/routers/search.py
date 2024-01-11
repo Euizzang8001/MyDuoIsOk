@@ -1,9 +1,6 @@
 from fastapi import APIRouter, Depends
 from models.search import MatchInfoBase, SummonerBase
-from schemas.search import match_info, summoner_info
-from bson import ObjectId
 from services.search import SummonerService
-import json
 
 
 router = APIRouter(
