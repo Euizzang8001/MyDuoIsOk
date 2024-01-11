@@ -1,7 +1,7 @@
 from fastapi import Depends
 
-from app.repository.search import SummonerRepository
-from app.models.search import MatchInfoBase, SummonerBase
+from repository.search import SummonerRepository
+from models.search import MatchInfoBase, SummonerBase
 import json
 
 class SummonerService():

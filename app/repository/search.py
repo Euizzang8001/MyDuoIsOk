@@ -2,8 +2,8 @@ from typing import List
 from fastapi import Depends, HTTPException
 import requests
 from pymongo import MongoClient
-from app.config.databases import db
-from app.models.search import MatchInfoBase, SummonerBase
+from config.databases import db
+from models.search import MatchInfoBase, SummonerBase
 from dotenv import load_dotenv
 import os
 
