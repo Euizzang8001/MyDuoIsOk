@@ -5,6 +5,7 @@ class MatchInfoBase(BaseModel):
     gameMode : str
     matchId: str
     gameDuration : int
+    gameCreation : int
     summonerOnePuuid: str
     summonerTwoPuuid : str
     summonerThreePuuid : str
@@ -51,22 +52,26 @@ class MatchInfoBase(BaseModel):
 
     teamBlueId : int
     teamBlueBan: list
+    teamBluePick: list
     teamBlueWin : int
     teamBlueGold : int
     teamBlueBaronKills : int
     teamBlueChampionKills : int
     teamBlueDragonKills : int
+    teamBlueHordeKills: int
     teamBlueInhibitorKills : int
     teamBlueRiftheraldKills : int
     teamBlueTowerKills : int
     
     teamRedId : int
     teamRedBan: list
+    teamRedPick : int
     teamRedWin : int
     teamRedGold : int
     teamRedBaronKills : int
     teamRedChampionKills : int
     teamRedDragonKills : int
+    teamRedHordeKills: int
     teamRedInhibitorKills : int
     teamRedRiftheraldKills : int
     teamRedTowerKills : int
