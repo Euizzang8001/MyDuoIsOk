@@ -54,7 +54,7 @@ def match_info(match) -> json:
 
         "teamBlueId": match['teamBlueId'],
         "teamBlueBan": list(match[i]['championId'] for i in range(5)),
-        "teamBluePick": match['teamBluePick'],
+        "teamBluePick": list(match['teamBluePick']),
         "teamBlueWin": match['teamBlueWin'],
         "teamBlueGold": match['teamBlueGold'],
         "teamBlueBaronKills": match['teamBlueBaronKills'],
@@ -67,7 +67,7 @@ def match_info(match) -> json:
 
         "teamRedId": match['teamRedId'],
         "teamRedBan": list(match[i]['championId'] for i in range(5)),
-        "teamRedPick": match['teamRedPick'],
+        "teamRedPick": list(match['teamRedPick']),
         "teamRedWin": match['teamRedWin'],
         "teamRedGold": match['teamRedGold'],
         "teamRedBaronKills": match['teamRedBaronKills'],

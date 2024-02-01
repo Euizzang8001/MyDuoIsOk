@@ -26,7 +26,7 @@ number_list = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', '
 
 st.title('My Duo Is OK..? :frowning:')
     
-explain1 = '함께 롤을 플레이하는 소환사들이 참 많습니다.'
+explain1 = '누군가와 함께 롤을 플레이하는 소환사들이 참 많습니다.'
 explain2 = '같이 하는 게임에서 누가 범인인지, 누가 캐리하는지 궁금하신 적 있으시죠?'
 explain3 = 'My duo is ok와 함께라면 더 재밌게 플레이 할 수 있을겁니다:rainbow:'
 st.write(explain1)
@@ -301,7 +301,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
             #champion.json와 다른 정보에 따라 코드 작성
             # matchId 마다의 container
             with st.container(border = True):
-                duration_seconds = per_match_info['gameDuration']%60
+                duration_seconds = int(per_match_info['gameDuration'])%60
                 date = datetime.fromtimestamp(per_match_info['gameCreation']/1000)
                 st.write(f"Game Date: {date.date()} / Game Time: {per_match_info['gameDuration']//60}:{duration_seconds:02}")
                 #게임 요약 부분(team Blue)
@@ -419,7 +419,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                                     per_summoner_pick_key = per_match_info['teamBluePick'][k]
                                     per_summoner_pick = str(9999999)
                                     for champion_key in champion_data['data']:
-                                        if champion_data['data'][champion_key]['key'] ==  str(per_summoner_ban_key):
+                                        if champion_data['data'][champion_key]['key'] ==  str(per_summoner_pick_key):
                                             per_summoner_pick = champion_data['data'][champion_key]['id']
                                             break
                                     pick_imange_url = str(0)
@@ -477,7 +477,7 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                                     per_summoner_pick_key = per_match_info['teamRedPick'][k]
                                     per_summoner_pick = str(9999999)
                                     for champion_key in champion_data['data']:
-                                        if champion_data['data'][champion_key]['key'] ==  str(per_summoner_ban_key):
+                                        if champion_data['data'][champion_key]['key'] ==  str(per_summoner_pick_key):
                                             per_summoner_pick = champion_data['data'][champion_key]['id']
                                             break
                                     pick_imange_url = str(0)
@@ -510,13 +510,13 @@ if search_summoner: #검색하기 위해 버튼을 누르면 검색 정보를 db
                             st.write(f"<p style='text-align: center; font-size: 2;'><strong>Level</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info1}</p>", unsafe_allow_html=True)
                         with col2:
-                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Kills</p>", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Kill</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info2}</p>", unsafe_allow_html=True)
                         with col3:
-                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Deaths</p>", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Death</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info3}</p>", unsafe_allow_html=True)
                         with col4:
-                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Assists</p>", unsafe_allow_html=True)
+                            st.write(f"<p style='text-align: center; font-size: 2;'><strong>Assist</p>", unsafe_allow_html=True)
                             st.write(f"<p style='text-align: center; font-size: 2;'>{info4}</p>", unsafe_allow_html=True)
                         with col5:
                             st.write(f"<p style='text-align: center; font-size: 2;'><strong>Gold</p>", unsafe_allow_html=True)

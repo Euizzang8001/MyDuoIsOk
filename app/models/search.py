@@ -65,7 +65,7 @@ class MatchInfoBase(BaseModel):
     
     teamRedId : int
     teamRedBan: list
-    teamRedPick : int
+    teamRedPick : list
     teamRedWin : int
     teamRedGold : int
     teamRedBaronKills : int
